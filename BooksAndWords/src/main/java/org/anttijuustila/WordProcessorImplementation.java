@@ -2,7 +2,7 @@ package org.anttijuustila;
 
 public class WordProcessorImplementation implements WordProcessor {
 
-    private WordFilter handler = null;
+    private WordFilter filter = null;
     private static int MAX_CHAR_ARRAY_LEN = 100;
     private char array[] = null;
     private int currentIndex = 0;
@@ -12,7 +12,7 @@ public class WordProcessorImplementation implements WordProcessor {
         if (handler == null) {
             throw new IllegalArgumentException("Handler was null");
         }
-        this.handler = handler;
+        this.filter = handler;
         array = new char[MAX_CHAR_ARRAY_LEN];
         return this;
     }
@@ -26,14 +26,14 @@ public class WordProcessorImplementation implements WordProcessor {
             if (currentIndex > 0) {
                 String word = new String(array, 0, currentIndex);
                 currentIndex = 0;
-                handler.handle(word);
+                filter.handle(word);
             }
         }
     }
 
     @Override
     public void finish() {
-        handler.finish();
+        filter.finish();
     }
     
 }

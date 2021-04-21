@@ -24,16 +24,36 @@ public class BooksAndWordsApp
             System.out.println("Filter file: " + filter);
             System.out.println("Listing top " + count + " words...\n");
             long start = System.nanoTime();
-            new BookReaderImplementation()
-                .setWordProcessor(new WordProcessorImplementation()
-                    .setWordFilter(new WordFilterImplementation()
+            bookReader()
+                .setWordProcessor(wordProcessor()
+                    .setWordFilter(wordFilter()
                         .readFile(filter)
-                        .setWordHandler(new WordHandlerImplementation()
-                            .setResultHandler(new ResultHandlerImplementation(count))))).readFile(file);
+                        .setWordHandler(wordHandler().setResultHandler(resultHandler(count))))
+                    ).readFile(file);
             long duration = System.nanoTime() - start;
             System.out.format("%n >>> Performance %5.5f secs.%n", duration / 1000000000.0);
         } catch (IllegalArgumentException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static BookReader bookReader() {
+        return new BookReaderImplementation();
+    }
+
+    private static WordProcessor wordProcessor() {
+        return new WordProcessorImplementation();
+    }
+
+    private static WordFilter wordFilter() {
+        return new WordFilterImplementation();
+    }
+
+    private static WordHandler wordHandler() {
+        return new WordHandlerImplementation();
+    }
+
+    private static ResultHandler resultHandler(int count) {
+        return new ResultHandlerImplementation(count);
     }
 }
