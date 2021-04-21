@@ -28,8 +28,12 @@ public class BooksAndWordsApp
                 .setWordProcessor(wordProcessor()
                     .setWordFilter(wordFilter()
                         .readFile(filter)
-                        .setWordHandler(wordHandler().setResultHandler(resultHandler(count))))
-                    ).readFile(file);
+                        .setWordHandler(wordHandler()
+                            .setResultHandler(resultHandler(count))
+                            )
+                        )
+                    )
+                    .readFile(file);
             long duration = System.nanoTime() - start;
             System.out.format("%n >>> Performance %5.5f secs.%n", duration / 1000000000.0);
         } catch (IllegalArgumentException | IOException e) {
