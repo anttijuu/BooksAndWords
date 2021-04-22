@@ -29,7 +29,7 @@ public class ResultHandlerImplementation implements ResultHandler {
         }
     }
 
-    public static String padRight(String s, int n) {
+    private String padRight(String s, int n) {
         return String.format("%-" + n + "s", s).replace(' ', '.');  
    }
    

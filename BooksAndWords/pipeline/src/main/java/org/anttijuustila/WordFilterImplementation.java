@@ -30,7 +30,7 @@ public class WordFilterImplementation implements WordFilter {
             String [] items = line.split(",");
             Collections.addAll(wordsToFilter, items);
         }
-        fileReader.close(); // closes the stream and release the resources
+        fileReader.close(); 
         return this;
     }
 
