@@ -51,31 +51,31 @@ public class KickForwardApp
         System.out.format("%n >>> Performance %5.5f secs.%n", duration / 1000000000.0);
     }
 
-    static void readFile(String fileName, BiConsumer<String, BiConsumer> filter) {
+    static void readFile(String fileName, BiConsumer<String, BiConsumer> func) {
         try {
             Path path = Paths.get(fileName);
             String content;
             content = Files.readString(path, StandardCharsets.UTF_8);
-            filter.accept(content, (BiConsumer<String, BiConsumer>) KickForwardApp::normalize);
+            func.accept(content, (BiConsumer<String, BiConsumer>) KickForwardApp::normalize);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    static void filterChars(String data, BiConsumer<String, BiConsumer> normalize) {
+    static void filterChars(String data, BiConsumer<String, BiConsumer> func) {
         Pattern pattern = Pattern.compile("[\\W_]+");
-        normalize.accept(pattern.matcher(data).replaceAll(" "), (BiConsumer<String, BiConsumer>) KickForwardApp::scan);
+        func.accept(pattern.matcher(data).replaceAll(" "), (BiConsumer<String, BiConsumer>) KickForwardApp::scan);
     }
 
-    static void normalize(String data, BiConsumer<String, BiConsumer> scanner) {
-        scanner.accept(data.toLowerCase(), (BiConsumer<String[], BiConsumer>) KickForwardApp::removeStopWords);
+    static void normalize(String data, BiConsumer<String, BiConsumer> func) {
+        func.accept(data.toLowerCase(), (BiConsumer<String[], BiConsumer>) KickForwardApp::removeStopWords);
     }
 
-    static void scan(String data, BiConsumer<String [], BiConsumer> remover) {
-        remover.accept(data.split(" "), (BiConsumer<List<String>, BiConsumer>) KickForwardApp::frequencies);
+    static void scan(String data, BiConsumer<String [], BiConsumer> func) {
+        func.accept(data.split(" "), (BiConsumer<List<String>, BiConsumer>) KickForwardApp::frequencies);
     }
 
-    static void removeStopWords(String [] data, BiConsumer<List<String>, BiConsumer> frequencyCounter) {
+    static void removeStopWords(String [] data, BiConsumer<List<String>, BiConsumer> func) {
         List<String> wordsToFilter = new ArrayList<String>();
         try {
             File file = new File(stopWordsListFile); 
@@ -97,10 +97,10 @@ public class KickForwardApp
                 cleanedWords.add(word);
             }
         }
-        frequencyCounter.accept(cleanedWords, (BiConsumer<Map<String,Integer>, BiConsumer>) KickForwardApp::sort);
+        func.accept(cleanedWords, (BiConsumer<Map<String,Integer>, BiConsumer>) KickForwardApp::sort);
     }
 
-    static void frequencies(List<String> words, BiConsumer<Map<String,Integer>, BiConsumer> sorter) {
+    static void frequencies(List<String> words, BiConsumer<Map<String,Integer>, BiConsumer> func) {
         Map<String, Integer> wordCounts = new HashMap<>();
 		for (String word : words) {
 			Integer count = wordCounts.get(word);
@@ -110,19 +110,19 @@ public class KickForwardApp
 				wordCounts.put(word, 1);
 			}
 		}
-        sorter.accept(wordCounts, (BiConsumer<Map<String,Integer>, Consumer<Void>>) KickForwardApp::printTop);
+        func.accept(wordCounts, (BiConsumer<Map<String,Integer>, Consumer<Void>>) KickForwardApp::printTop);
     }
 
-    static void sort(Map<String,Integer> wordFrequencies, BiConsumer<Map<String,Integer>, Consumer<Void>> printer) {
+    static void sort(Map<String,Integer> wordFrequencies, BiConsumer<Map<String,Integer>, Consumer<Void>> func) {
         Map<String,Integer> topList = new LinkedHashMap<>();
         wordFrequencies.entrySet()
             .stream()
             .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
             .forEachOrdered(x -> topList.put(x.getKey(), x.getValue()));
-        printer.accept(topList, (Consumer<Void>) KickForwardApp::noOp);
+        func.accept(topList, (Consumer<Void>) KickForwardApp::noOp);
     }
 
-    static void printTop(Map<String, Integer> sortedWords, Consumer<Void> noOpFunc) {
+    static void printTop(Map<String, Integer> sortedWords, Consumer<Void> func) {
         int counter = 1;
         for (Map.Entry<String,Integer> entry : sortedWords.entrySet()) {
             System.out.format("%4d. %-30s %7d %n", counter++, padRight(entry.getKey(), 30), entry.getValue());
@@ -130,7 +130,7 @@ public class KickForwardApp
                 break;
             }
         }
-		noOpFunc.accept(null);
+		func.accept(null);
 	}
 
     static void noOp(Void v) {
