@@ -23,13 +23,13 @@ import java.util.regex.Pattern;
  * Hello world!
  *
  */
-public class KickForwardApp 
+public class ParallelKickForwardApp 
 {
     public static void main( String[] args )
     {
         if (args.length != 3) {
-            System.out.println("Usage: java -cp target/classes org.anttijuustila.KickForwardApp book-file filter-file count-of-top-words");
-            System.out.println("Example: java -cp target/classes org.anttijuustila.KickForwardApp Bulk.txt filter.txt 25");
+            System.out.println("Usage: java -cp target/classes org.anttijuustila.ParallelKickForwardApp book-file filter-file count-of-top-words");
+            System.out.println("Example: java -cp target/classes org.anttijuustila.ParallelKickForwardApp Bulk.txt filter.txt 25");
             return;
         }
         run(args[0], args[1], Integer.parseInt(args[2]));
@@ -37,6 +37,7 @@ public class KickForwardApp
 
     private static String stopWordsListFile = null;
     private static int countOfWordsToList = 100;
+    private static Map<String,Integer> finalTopList = new LinkedHashMap<>();
 
     // run > readfile > filterChars > normalize > scan > removeStopWords > frequencies > sort > print > noOp
     static void run(String fileName, String stopWordsFile, int countToList) {
@@ -46,7 +47,7 @@ public class KickForwardApp
         long start = System.nanoTime();
         stopWordsListFile = stopWordsFile;
         countOfWordsToList = countToList;
-        readFile(fileName, KickForwardApp::filterChars);
+        readFile(fileName, ParallelKickForwardApp::filterChars);
         long duration = System.nanoTime() - start;
         System.out.format("%n >>> Performance %5.5f secs.%n", duration / 1000000000.0);
     }
@@ -54,25 +55,45 @@ public class KickForwardApp
     static void readFile(String fileName, BiConsumer<String, BiConsumer> func) {
         try {
             Path path = Paths.get(fileName);
-            String content;
-            content = Files.readString(path, StandardCharsets.UTF_8);
-            func.accept(content, (BiConsumer<String, BiConsumer>) KickForwardApp::normalize);
+            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+            int linesTotal = lines.size();
+            int sectionLines = lines.size() / 4;
+            List<Thread> threads = new ArrayList<Thread>();
+            int lastLine = linesTotal - 1;
+            for (int i = 0; i < 4; i++) {
+                int firstLine = Math.max(lastLine - sectionLines, 0);
+                String section = lines.subList(firstLine, lastLine).toString();
+                lastLine = firstLine - 1;
+                Thread thread = new Thread(new Runnable(){
+                    public void run() {
+                        func.accept(section, (BiConsumer<String, BiConsumer>) ParallelKickForwardApp::normalize);
+                    }
+                });
+                threads.add(thread);
+                thread.start();
+            }
+            for (Thread thread : threads) {
+                thread.join();
+            }
+            sort(finalTopList, ParallelKickForwardApp::printTop);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     static void filterChars(String data, BiConsumer<String, BiConsumer> func) {
         Pattern pattern = Pattern.compile("[\\W_]+");
-        func.accept(pattern.matcher(data).replaceAll(" "), (BiConsumer<String, BiConsumer>) KickForwardApp::scan);
+        func.accept(pattern.matcher(data).replaceAll(" "), (BiConsumer<String, BiConsumer>) ParallelKickForwardApp::scan);
     }
 
     static void normalize(String data, BiConsumer<String, BiConsumer> func) {
-        func.accept(data.toLowerCase(), (BiConsumer<String[], BiConsumer>) KickForwardApp::removeStopWords);
+        func.accept(data.toLowerCase(), (BiConsumer<String[], BiConsumer>) ParallelKickForwardApp::removeStopWords);
     }
 
     static void scan(String data, BiConsumer<String [], BiConsumer> func) {
-        func.accept(data.split(" "), (BiConsumer<List<String>, BiConsumer>) KickForwardApp::frequencies);
+        func.accept(data.split(" "), (BiConsumer<List<String>, BiConsumer>) ParallelKickForwardApp::frequencies);
     }
 
     static void removeStopWords(String [] data, BiConsumer<List<String>, BiConsumer> func) {
@@ -97,7 +118,7 @@ public class KickForwardApp
                 cleanedWords.add(word);
             }
         }
-        func.accept(cleanedWords, (BiConsumer<Map<String,Integer>, BiConsumer>) KickForwardApp::sort);
+        func.accept(cleanedWords, (BiConsumer<Map<String,Integer>, BiConsumer>) ParallelKickForwardApp::sort);
     }
 
     static void frequencies(List<String> words, BiConsumer<Map<String,Integer>, BiConsumer> func) {
@@ -110,7 +131,7 @@ public class KickForwardApp
 				wordCounts.put(word, 1);
 			}
 		}
-        func.accept(wordCounts, (BiConsumer<Map<String,Integer>, Consumer<Void>>) KickForwardApp::printTop);
+        func.accept(wordCounts, (BiConsumer<Map<String,Integer>, Consumer<Void>>) ParallelKickForwardApp::saveTop);
     }
 
     static void sort(Map<String,Integer> wordFrequencies, BiConsumer<Map<String,Integer>, Consumer<Void>> func) {
@@ -119,7 +140,27 @@ public class KickForwardApp
             .stream()
             .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
             .forEachOrdered(x -> topList.put(x.getKey(), x.getValue()));
-        func.accept(topList, (Consumer<Void>) KickForwardApp::noOp);
+        func.accept(topList, (Consumer<Void>) ParallelKickForwardApp::noOp);
+    }
+
+    static void saveTop(Map<String, Integer> sortedWords, Consumer<Void> func) {
+        int counter = 1;
+        for (Map.Entry<String,Integer> entry : sortedWords.entrySet()) {
+            addToFinal(entry);
+            if (counter > countOfWordsToList * 2) {
+                break;
+            }
+        }
+		func.accept(null);
+	}
+
+    static synchronized void addToFinal(Map.Entry<String,Integer> entry) {
+        Integer count = finalTopList.get(entry.getKey());
+        if (count != null) {
+            finalTopList.put(entry.getKey(), count + entry.getValue());
+        } else {
+            finalTopList.put(entry.getKey(), entry.getValue());
+        }
     }
 
     static void printTop(Map<String, Integer> sortedWords, Consumer<Void> func) {
