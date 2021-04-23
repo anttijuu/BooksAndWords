@@ -25,7 +25,8 @@ Listing 100 most common words.
 This implementation is demonstrating *recursion* as a way to solve the problem using Swift as the
 programming language.
 
-The implementation was inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
+The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
+
 
 ## Dependencies
 
@@ -47,7 +48,7 @@ and then run the app:
 ```
 
 Assuming the binary is in `./.build/x86_64-apple-macosx/release` and user gives the two text files
-and the count of the most frequent words to print out.
+and the count of the most frequent words to print out. Text files must be UTF-8 encoded plain text files.
 
 If you have issues with stack overflow, try changing the `recursionLimit` to something smaller than currently in the code:
 
