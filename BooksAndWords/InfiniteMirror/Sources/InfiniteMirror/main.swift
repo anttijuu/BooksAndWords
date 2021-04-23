@@ -1,0 +1,74 @@
+import Foundation
+import ArgumentParser
+
+struct InfiniteMirror: ParsableCommand {
+   static let configuration = CommandConfiguration(abstract: "A Swift command-line tool to count the most often used words in a book file.")
+
+   @Argument(help: "The file name for the book file.")
+   private var bookFile: String
+
+   @Argument(help: "The file name for the stop words.")
+   private var stopWordsFile: String
+
+   @Argument(help: "The number of top words to list.")
+   private var topListSize: Int
+
+   init() { }
+
+   func run() throws {
+      print("Book file: \(bookFile).")
+      print("Stop words file: \(stopWordsFile).")
+      print("Listing \(topListSize) most common words.")
+
+      let start = Date()
+
+      var words = [String]()
+      var stopWords = [String]()
+      var counts: [String:Int] = [:]
+
+      var data = FileManager.default.contents(atPath: stopWordsFile)
+      if let data = data {
+         let asString = String(decoding: data, as: UTF8.self)
+         stopWords = asString.components(separatedBy: ",")
+      }
+      data = FileManager.default.contents(atPath: bookFile)
+      if let data = data {
+         var asString = String(decoding: data, as: UTF8.self)
+         asString = asString.lowercased()
+         words = asString.split{ $0.isWhitespace || $0.isPunctuation }.map{ String($0)}
+      }
+      let recursionLimit = 50_000
+      for index in stride(from: 0, to: words.count, by: recursionLimit) {
+         count(from: words[index..<min(index+recursionLimit,words.count-1)], ignoring: stopWords, to: &counts)
+      }
+      let sorted = counts.sorted( by: { $0.1 > $1.1 })
+      var counter = 1
+      for (key, value) in sorted {
+         print("\(String(counter).rightJustified(width: 3)). \(key.leftJustified(width: 20, fillChar: ".")) \(value)")
+         counter += 1
+         if counter > topListSize {
+            break
+         }
+      }
+      let duration = start.distance(to: Date())
+      print(" >>>> Time \(duration) secs.")
+   }
+
+   func count(from words: ArraySlice<String>, ignoring stopWords: [String], to wordCounts: inout [String:Int]) {
+      if words.count == 0 {
+         return
+      } else {
+         let word = words[words.startIndex]
+         if stopWords.firstIndex(of: word) == nil && !word.isNumeric && word.count >= 2 {
+            if wordCounts[word] != nil {
+               wordCounts[word]! += 1
+            } else {
+               wordCounts[word] = 1
+            }
+         }
+         count(from: words[words.startIndex + 1..<words.endIndex], ignoring: stopWords, to: &wordCounts)
+      }
+   }
+}
+
+InfiniteMirror.main()
