@@ -49,10 +49,10 @@ and then run the app:
 Assuming the binary is in `./.build/x86_64-apple-macosx/release` and user gives the two text files
 and the count of the most frequent words to print out.
 
-If you have issues with stack overflow, try changing the `recursionLimit` to something smaller than 50000:
+If you have issues with stack overflow, try changing the `recursionLimit` to something smaller than currently in the code:
 
 ```Swift
-let recursionLimit = 50_000
+let recursionLimit = 10_000
 ```
 
 ## Who did this

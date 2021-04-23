@@ -35,10 +35,10 @@ struct InfiniteMirror: ParsableCommand {
       if let data = data {
          var asString = String(decoding: data, as: UTF8.self)
          asString = asString.lowercased()
-         words = asString.split{ $0.isWhitespace || $0.isPunctuation }.map{ String($0)}
+         words = asString.split{ $0.isWhitespace || $0.isPunctuation }.map{ String($0) }
       }
-      let recursionLimit = 50_000
-      for index in stride(from: 0, to: words.count, by: recursionLimit) {
+      let recursionLimit = 10_000
+      for index in stride(from: 0, to: words.count - 1, by: recursionLimit) {
          count(from: words[index..<min(index+recursionLimit,words.count-1)], ignoring: stopWords, to: &counts)
       }
       let sorted = counts.sorted( by: { $0.1 > $1.1 })

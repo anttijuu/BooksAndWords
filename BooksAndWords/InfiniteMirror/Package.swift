@@ -20,8 +20,5 @@ let package = Package(
       .target(
          name: "InfiniteMirror",
          dependencies: [ .product(name: "ArgumentParser", package: "swift-argument-parser") ]),
-      .testTarget(
-         name: "InfiniteMirrorTests",
-         dependencies: ["InfiniteMirror"]),
    ]
 )
