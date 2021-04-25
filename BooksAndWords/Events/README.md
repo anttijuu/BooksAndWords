@@ -22,7 +22,7 @@ Listing 100 most common words.
 ...
 ```
 
-This implementation is demonstrating producing and handling *events* as a way to solve the problem, using Swift as the
+This implementation is demonstrating producing and handling *synchronous events* as a way to solve the problem, using Swift as the
 programming language.
 
 The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
