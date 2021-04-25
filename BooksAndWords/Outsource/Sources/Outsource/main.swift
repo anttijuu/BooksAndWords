@@ -34,7 +34,7 @@ struct Outsource: ParsableCommand {
    }
 
    private func stepOne() {
-      let output = executeCommand(command: "/bin/zsh", args: ["-c", " exec /usr/bin/tr , '\n' < \(stopWordsFile) > stopwords.txt"])
+      let output = executeCommand(command: "/bin/zsh", args: ["-c", " exec tr , '\n' < \(stopWordsFile) > stopwords.txt"])
       print("\(output)")
    }
 
