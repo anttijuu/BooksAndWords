@@ -1,5 +1,3 @@
-print("Hello, world!")
-
 import Foundation
 
 import ArgumentParser
@@ -39,7 +37,7 @@ struct Outsource: ParsableCommand {
    }
 
    private func stepTwo() {
-      let output = executeCommand(command: "/bin/zsh", args: ["-c" , "grep -f stopwords.txt \(bookFile) | grep -o '[A-Za-z][A-Za-z][A-Za-z]*' | tr '[:upper:]' '[:lower:]'\\ | sort | uniq -c | sort -rn | head -n \(topListSize) | sed -e 's/ˆ *\\([0-9]*\\) *\\([a-z]*\\)/\\2 - \\1/'"])
+      let output = executeCommand(command: "/bin/zsh", args: ["-c" , "exec grep -o '[A-Za-z][A-Za-z][A-Za-z]*' < \(bookFile) | tr '[:upper:]' '[:lower:]'\\ | sort | uniq -c | sort -rn | head -n \(topListSize) | sed -e 's/ˆ *\\([0-9]*\\) *\\([a-z]*\\)/\\2 - \\1/'"])
       print("\(output)")
    }
 
