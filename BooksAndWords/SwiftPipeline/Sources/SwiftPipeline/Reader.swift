@@ -8,6 +8,6 @@
 import Foundation
 
 protocol Reader {
-   func reading(from file: String) -> Reader
+   func reading(from file: String)
    func processing(with processor: Processor) -> Reader
 }

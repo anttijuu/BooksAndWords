@@ -23,7 +23,7 @@ class HandlerImpl: Handler {
       }
    }
 
-   func print() -> Handler {
+   func print() {
       let sorted = wordCounts.sorted( by: { $0.1 > $1.1 })
       var counter = 1
       for (key, value) in sorted {
@@ -33,7 +33,6 @@ class HandlerImpl: Handler {
             break
          }
       }
-      return self
    }
 
 

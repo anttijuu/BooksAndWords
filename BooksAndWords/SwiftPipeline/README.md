@@ -26,11 +26,11 @@ This implementation is demonstrating *pipelining* as a way to solve the problem,
 programming language. In pipelines, function calls are piplelines like this:
 
 ```Swift
-reader()
-   .processing(with: processor()
-      .filtering(with: filter()
+ReaderImpl()
+   .processing(with: ProcessorImpl()
+      .filtering(with: FilterImpl()
          .preparing(from: stopWordsFile)
-         .handling(with: handler(topListSize))))
+         .handling(with: HandlerImpl(topCount: topListSize))))
    .reading(from: bookFile)
 ```
 
