@@ -27,11 +27,11 @@ programming language. In pipelines, function calls are piplelines like this:
 
 ```Swift
 reader()
-   .process(with: processor()
+   .processing(with: processor()
       .filtering(with: filter()
          .preparing(from: stopWordsFile)
          .handling(with: handler(topListSize))))
-   .read(from: bookFile)
+   .reading(from: bookFile)
 ```
 
 The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
