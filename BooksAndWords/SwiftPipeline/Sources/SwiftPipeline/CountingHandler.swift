@@ -7,7 +7,7 @@
 
 import Foundation
 
-class HandlerImpl: Handler {
+class CountingHandler: Handler {
    private var wordCounts: [String:Int] = [:]
    private var topCount: Int = 100
 
@@ -23,7 +23,7 @@ class HandlerImpl: Handler {
       }
    }
 
-   func print() {
+   func showResult() {
       let sorted = wordCounts.sorted( by: { $0.1 > $1.1 })
       var counter = 1
       for (key, value) in sorted {

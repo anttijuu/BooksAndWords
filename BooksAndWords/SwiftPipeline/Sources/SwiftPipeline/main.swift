@@ -15,7 +15,7 @@ struct SwiftPipeline: ParsableCommand {
 
    init() { }
 
-   mutating func run() throws {
+   func run() throws {
       print("Book file: \(bookFile).")
       print("Stop words file: \(stopWordsFile).")
       print("Listing \(topListSize) most common words.")
@@ -26,7 +26,7 @@ struct SwiftPipeline: ParsableCommand {
          .processing(with: ProcessorImpl()
             .filtering(with: FilterImpl()
                .preparing(from: stopWordsFile)
-               .handling(with: HandlerImpl(topCount: topListSize))))
+               .handling(with: CountingHandler(topCount: topListSize))))
          .reading(from: bookFile)
 
       let duration = start.distance(to: Date())
