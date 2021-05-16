@@ -11,7 +11,7 @@ class ReaderImpl: Reader {
 
    var processor: Processor?
 
-   func read(from file: String) -> Reader {
+   func reading(from file: String) -> Reader {
       precondition(processor != nil)
       let data = FileManager.default.contents(atPath: file)
       if let data = data {
@@ -25,7 +25,7 @@ class ReaderImpl: Reader {
       return self
    }
 
-   func process(with processor: Processor) -> Reader {
+   func processing(with processor: Processor) -> Reader {
       self.processor = processor
       return self
    }

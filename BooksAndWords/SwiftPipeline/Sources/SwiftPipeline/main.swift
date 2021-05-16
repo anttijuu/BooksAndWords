@@ -23,11 +23,11 @@ struct SwiftPipeline: ParsableCommand {
       let start = Date()
 
       _ = reader()
-            .process(with: processor()
+            .processing(with: processor()
                .filtering(with: filter()
                   .preparing(from: stopWordsFile)
                   .handling(with: handler(topListSize))))
-            .read(from: bookFile)
+            .reading(from: bookFile)
 
       let duration = start.distance(to: Date())
       print(" >>>> Time \(duration) secs.")
