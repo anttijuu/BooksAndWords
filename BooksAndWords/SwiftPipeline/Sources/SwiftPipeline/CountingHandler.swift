@@ -23,7 +23,7 @@ class CountingHandler: Handler {
       }
    }
 
-   func showResult() {
+   func finish() {
       let sorted = wordCounts.sorted( by: { $0.1 > $1.1 })
       var counter = 1
       for (key, value) in sorted {

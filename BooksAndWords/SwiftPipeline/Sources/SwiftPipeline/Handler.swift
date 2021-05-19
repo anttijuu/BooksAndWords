@@ -9,5 +9,5 @@ import Foundation
 
 protocol Handler {
    func handle(_ word: String)
-   func showResult()
+   func finish()
 }

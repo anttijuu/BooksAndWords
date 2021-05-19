@@ -35,7 +35,7 @@ class FilterImpl: Filter {
 
    func finish() {
       precondition(handler != nil)
-      handler!.showResult()
+      handler!.finish()
    }
 
 }
