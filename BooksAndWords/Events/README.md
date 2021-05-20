@@ -22,8 +22,8 @@ Listing 100 most common words.
 ...
 ```
 
-This implementation is demonstrating producing and handling *synchronous events* as a way to solve the problem, using Swift as the
-programming language.
+This implementation is demonstrating producing and handling *synchronous callbacks* as a way to solve the problem, using Swift as the
+programming language. The style is often characterized by the Hollywood "do not call us, we call you" kind of programming.
 
 The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
 
