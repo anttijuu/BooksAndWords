@@ -22,7 +22,7 @@ struct Persistence: ParsableCommand {
       print("Listing \(topListSize) most common words.")
 
       let start = Date()
-      let dbName = "./" + bookFile.suffix(from: bookFile.lastIndex(of: "/")!) + ".sqlite"
+      let dbName = "." + String(bookFile.suffix(from: bookFile.lastIndex(of: "/")!)) + ".sqlite"
       let dataBase = BookDatabase()
       if dataBase.create(for: dbName) {
          insertWords(to: dataBase)
