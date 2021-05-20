@@ -34,7 +34,6 @@ struct KickForward: ParsableCommand {
 
       let duration = start.distance(to: Date())
       print(" >>>> Time \(duration) secs.")
-
    }
 
    func readFile(file: String, function: ArrayArrayMapNoOpFunc) -> Void {
@@ -65,7 +64,6 @@ struct KickForward: ParsableCommand {
       }
       // ...calculateFrequencies calls printTop...
       function(cleanedWords, printTop)
-
    }
 
    func calculateFrequencies(words: [String], function: MapNoOpFunc) -> Void {
@@ -76,7 +74,6 @@ struct KickForward: ParsableCommand {
          } else {
             wordCounts[word] = 1
          }
-
       }
       // ..printTop calls noOp...
       function(wordCounts, noOp)
