@@ -13,17 +13,21 @@ struct Persistence: ParsableCommand {
    @Argument(help: "The number of top words to list.")
    private var topListSize: Int
 
+   @Option(help: "If true, use in memory database, not a file.")
+   private var memory: Bool
+
    init() { }
 
    func run() throws {
       print("Book file: \(bookFile).")
       print("Stop words file: \(stopWordsFile).")
       print("Listing \(topListSize) most common words.")
+      print("Using inMemory database? \(memory)")
 
       let start = Date()
       let dbName = "." + String(bookFile.suffix(from: bookFile.lastIndex(of: "/")!)) + ".sqlite"
       let dataBase = BookDatabase()
-      if dataBase.create(for: dbName) {
+      if dataBase.create(for: dbName, inMemory: memory) {
          insertWords(to: dataBase)
          queryTop(from: dataBase)
       } else {

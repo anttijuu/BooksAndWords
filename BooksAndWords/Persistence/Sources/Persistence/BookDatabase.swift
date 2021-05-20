@@ -18,15 +18,19 @@ class BookDatabase {
    init() {
    }
 
-   public func create(for book: String) -> Bool {
+   public func create(for book: String, inMemory: Bool) -> Bool {
       do {
-         try connection = Connection(book)
+         if inMemory {
+            try connection = Connection(.inMemory)
+         } else {
+            try connection = Connection(book)
+         }
          try connection!.run(words.create{ t in
             t.column(word, primaryKey: true)
             t.column(count)
          })
       } catch  {
-         print("Failed to create db for \(book)")
+         print("Failed to create db for \(book) because \(error)")
          return false
       }
       return true

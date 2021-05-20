@@ -44,7 +44,7 @@ swift build -c release
 and then run the app:
 
 ```console
-./.build/x86_64-apple-macosx/release/persistence path-to-book.txt path-to-ignore-file.txt 100 
+./.build/x86_64-apple-macosx/release/persistence path-to-book.txt path-to-ignore-file.txt 100 --memory false
 ```
 
 Assuming the binary is in `./.build/x86_64-apple-macosx/release` and user gives the two text files
@@ -85,6 +85,9 @@ And when running the app again with the same text file, basically reading the da
 ```
 
 ...shows the advantage of *caching* the results from previous run in the database.
+
+If you run with the `--memory` option set to `true` in-memory database is used and no database file is created. Using an in-memory database is only a little bit faster compared to database in file. Probably performance could be improved by using prepared statements and other SQLite optimizations (left for the interested reader to implement). 
+
 
 ## Who did this
 
