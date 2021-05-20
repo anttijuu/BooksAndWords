@@ -48,7 +48,6 @@ struct KickForward: ParsableCommand {
       function(words, calculateFrequencies)
    }
 
-
    func filterWords(words: [String], function: ArrayMapNoOpFunc) -> Void {
       let data = FileManager.default.contents(atPath: stopWordsFile)
       var wordsToFilter = [String]()
