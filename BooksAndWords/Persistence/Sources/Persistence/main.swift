@@ -13,7 +13,6 @@ struct Persistence: ParsableCommand {
    @Argument(help: "The number of top words to list.")
    private var topListSize: Int
 
-
    init() { }
 
    func run() throws {

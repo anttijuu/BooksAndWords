@@ -70,7 +70,7 @@ sqlite> .quit
 
 Database name is based on the book text file name, given as the first parameter to the app.
 
-Note that the first time, the app analyses the text file and inserts the words with counts into the database. If you run the app again, and the database already exists, the app does not handle the file again but queries the top word list from the database. Obviously this is much faster.
+Note that the first time, the app analyses the text file and inserts the words with counts into the database. If you run the app again, and the database already exists for the book, the app does not handle the file again but queries the top word list from the database. Obviously this is much faster.
 
 Example of a first run with text file analysis with book WarPeace.txt (War and Peace, by Leo Tolstoy):
 
@@ -78,13 +78,13 @@ Example of a first run with text file analysis with book WarPeace.txt (War and P
 >>>> Time 26.20789098739624 secs.
 ```
 
-And when running the app again with the same text file:
+And when running the app again with the same text file, basically reading the database only:
 
 ```console
 >>>> Time 0.0042040348052978516 secs.
 ```
 
-...shows the advantage of *caching* the results from previous run.
+...shows the advantage of *caching* the results from previous run in the database.
 
 ## Who did this
 
