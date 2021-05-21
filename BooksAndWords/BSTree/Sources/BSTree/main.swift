@@ -58,14 +58,16 @@ struct BSTree: ParsableCommand {
       }
       // Now all words have been counted.
       // Sort the array by the count, descending.
-      let sorted = tree.asArray().sorted( by: { $0.count > $1.count })
-      var counter = 1
-      // Then print out the most common ones, starting from the beginning.
-      for wordFrequency in sorted {
-         print("\(String(counter).rightJustified(width: 3)). \(wordFrequency.word.leftJustified(width: 20, fillChar: ".")) \(wordFrequency.count)")
-         counter += 1
-         if counter > topListSize {
-            break
+      if let result = tree.asArray() {
+         let sorted = result.sorted( by: { $0.count > $1.count })
+         var counter = 1
+         // Then print out the most common ones, starting from the beginning.
+         for wordFrequency in sorted {
+            print("\(String(counter).rightJustified(width: 3)). \(wordFrequency.word.leftJustified(width: 20, fillChar: ".")) \(wordFrequency.count)")
+            counter += 1
+            if counter > topListSize {
+               break
+            }
          }
       }
       print("Count of words: \(tree.wordCount), count of unique words: \(tree.uniqueWordCount)")
@@ -75,7 +77,11 @@ struct BSTree: ParsableCommand {
       // And we are done!
       let fileName = "dotgraph.txt"
       print("Exporting tree structure to \(fileName), use dot -Tsvg \(fileName) -otree.svg to view it.")
-      tree.exportDot(to: fileName)
+      var name = URL(fileURLWithPath: bookFile).lastPathComponent
+      if name.contains(".") {
+         name = String(name.prefix(upTo: name.lastIndex(of: ".")!))
+      }
+      tree.exportDot(with: name, to: fileName)
    }
 
 }

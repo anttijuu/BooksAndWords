@@ -22,27 +22,26 @@ class BinarySearchTree {
       }
    }
 
-   func asArray() -> [WordCount] {
-      let array = [WordCount]()
+   func asArray() -> [WordCount]? {
       guard root != nil else {
-         return array
+         return nil
       }
-      let visitor = ToArrayVisitor(array: array)
+      let visitor = ToArrayVisitor()
       do {
          try root!.accept(visitor)
       } catch {
          print("Exception in exporting the tree to an array")
       }
-      return array
+      return visitor.array
    }
 
-   func exportDot(to fileName: String) {
+   func exportDot(with name: String, to fileName: String) {
       guard root != nil else {
          return
       }
       let dotVisitor = DotGenerator(file: URL(fileURLWithPath: fileName))
       do {
-         dotVisitor.start()
+         dotVisitor.start(with: name)
          try root!.accept(dotVisitor)
          dotVisitor.finish()
       } catch {

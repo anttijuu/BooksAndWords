@@ -34,7 +34,7 @@ dot -Tsvg dotgraph.txt -otree.svg
 
 And then opening the svg file (most browsers know how to do this). Note that if the book file is very large having thousands of different words, the graphic representation becomes quite difficult to view. Use small enough text files with maybe hundreds of words only, to have a manageable viewing experience. 
 
-Remember to remove the dotgraph.txt file before running the app again, since the code always appends to that file.
+**Remember** to delete the `dotgraph.txt` file before running the app again, since the code always *appends* to that file.
 
 > Note that GrahpViz cannot handle special characters in the .dot file node names. For example, if the text contains a word like "$5000", it is not possible to generate the graph. Obvious solution would be to replace special chars with allowed ones when generating .dot node names, but that is left as an exercise to the reader. You could also add problematic words with special chars to the ignore list (second parameter for the app), to solve issues related to this.
 

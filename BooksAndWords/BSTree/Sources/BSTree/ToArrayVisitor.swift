@@ -11,8 +11,8 @@ class ToArrayVisitor: Visitor {
 
    var array: [WordCount]
 
-   init(array: [WordCount]) {
-      self.array = array
+   init() {
+      array = [WordCount]()
    }
 
    func visit(node: TreeNode) throws {

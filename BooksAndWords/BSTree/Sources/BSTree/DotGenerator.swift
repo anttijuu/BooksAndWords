@@ -16,9 +16,9 @@ class DotGenerator: Visitor {
       self.file = file
    }
 
-   func start() {
+   func start(with name: String) {
       do {
-         try "digraph TOLLuK {".appendLine(to: file)
+         try "digraph \(name) {".appendLine(to: file)
          try "node [shape=record, style=\"rounded,filled\"]".appendLine(to: file)
       } catch {
          fatalError("Error in creating .dot file, aborting \(error)")
