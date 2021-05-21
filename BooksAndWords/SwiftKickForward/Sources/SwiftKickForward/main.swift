@@ -62,6 +62,7 @@ struct KickForward: ParsableCommand {
          }
       }
       // ...calculateFrequencies calls printTop...
+      print("File has \(cleanedWords.count) words.")
       function(cleanedWords, printTop)
    }
 
@@ -75,6 +76,7 @@ struct KickForward: ParsableCommand {
          }
       }
       // ..printTop calls noOp...
+      print("File has \(wordCounts.count) unique words.")
       function(wordCounts, noOp)
    }
 

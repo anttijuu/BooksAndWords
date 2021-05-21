@@ -1,7 +1,7 @@
 import Foundation
 import ArgumentParser
 
-struct BadBook: ParsableCommand {
+struct BSTree: ParsableCommand {
    static let configuration = CommandConfiguration(abstract: "A Swift command-line tool to count the most often used words in a book file.")
 
    @Argument(help: "The file name for the book file.")
@@ -51,21 +51,14 @@ struct BadBook: ParsableCommand {
          }
       }
       // Prepare the array containing unique words and their frequencies.
-      var wordFrequencies = [WordFrequency]()
+      let tree = BinarySearchTree()
       // For all filtered words...
       for word in cleanedWords {
-         // ...see if is already in the array...
-         if let foundIndex = wordFrequencies.firstIndex(where: { $0.word == word } ) {
-            // ..if yes, increase the count by one...
-            wordFrequencies[foundIndex].count += 1
-         } else {
-            // ...and if not, add it to the array with count of one.
-            wordFrequencies.append(WordFrequency(word: word, count: 1))
-         }
+         tree.insert(word)
       }
       // Now all words have been counted.
       // Sort the array by the count, descending.
-      let sorted = wordFrequencies.sorted( by: { $0.count > $1.count })
+      let sorted = tree.asArray().sorted( by: { $0.count > $1.count })
       var counter = 1
       // Then print out the most common ones, starting from the beginning.
       for wordFrequency in sorted {
@@ -75,13 +68,16 @@ struct BadBook: ParsableCommand {
             break
          }
       }
-      print("File has \(cleanedWords.count) words and \(wordFrequencies.count) unique words.")
+      print("Count of words: \(tree.wordCount), count of unique words: \(tree.uniqueWordCount)")
       // Print out how long this took.
       let duration = start.distance(to: Date())
       print(" >>>> Time \(duration) secs.")
       // And we are done!
+      let fileName = "dotgraph.txt"
+      print("Exporting tree structure to \(fileName), use dot -Tsvg \(fileName) -otree.svg to view it.")
+      tree.exportDot(to: fileName)
    }
 
 }
 
-BadBook.main()
+BSTree.main()
