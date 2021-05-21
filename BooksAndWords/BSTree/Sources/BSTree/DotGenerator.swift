@@ -38,7 +38,7 @@ class DotGenerator: Visitor {
          level += 1
          try left.accept(self)
          level -= 1
-         try label(between: node, and: left, onEdge: "L").appendLine(to: file)
+         try label(between: node, and: left, onEdge: " L").appendLine(to: file)
       }
       let str = "".rightJustified(width: level) + label(for: node)
       try str.appendLine(to: file)
@@ -46,7 +46,7 @@ class DotGenerator: Visitor {
          level += 1
          try right.accept(self)
          level -= 1
-         try label(between: node, and: right, onEdge: "R").appendLine(to: file)
+         try label(between: node, and: right, onEdge: " R").appendLine(to: file)
       }
    }
 
