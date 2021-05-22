@@ -1,6 +1,6 @@
-# SwiftPipeline
+# Pipeline
 
-SwiftPipeline demonstrates one programming style to solve the frequent words task, where
+Pipeline demonstrates one programming style to solve the frequent words task, where
 an app reads a text file containing a book. App then calculates the most often used words and their 
 frequencies from a text file, ignoring words listed in another file. 
 
@@ -23,7 +23,7 @@ Listing 100 most common words.
 ```
 
 This implementation is demonstrating *pipelining* as a way to solve the problem, using Swift as the
-programming language. In pipelines, function calls are piplelines like this:
+programming language. In pipelines, function calls are linked in sequence, as pipelines, like this:
 
 ```Swift
 ReaderImpl()
@@ -34,12 +34,10 @@ ReaderImpl()
    .reading(from: bookFile)
 ```
 
-The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
-
 
 ## Dependencies
 
-Events uses the Swift Argument Parser to handle the parameters.
+Pipeline uses the Swift Argument Parser to handle the parameters.
 
 
 ## Building and running
@@ -61,6 +59,9 @@ and the count of the most frequent words to print out. Text files must be UTF-8 
 
 
 ## Who did this
+
+The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
+
 
 * (c) Antti Juustila
 * INTERACT Research Group

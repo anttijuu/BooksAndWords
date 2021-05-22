@@ -24,15 +24,13 @@ Listing 100 most common words.
 
 This implementation is demonstrating a *naive* way to solve the problem, using Swift as the programming language. 
 
-Why naive and therefore bad, as the name of the project implies? While the solution works, and is fast with small text files, it fails with big files -- the performance is not acceptable. A small text file, like the book *War and Peace* by Leo Tolstoy (3.2 Mb text file) is handled in a couple of secods, a larger 17.2 Mb text file takes over 167 seconds to handle. 
+Why naive and therefore bad, as the name of the project implies? While the solution works, and is fast with small text files, it fails with big files -- the performance is not acceptable. A small text file, like the book *War and Peace* by Leo Tolstoy (3.2 Mb text file) is handled in a couple of secods, a larger 17.2 Mb text file takes over 167 seconds to handle. Actual performance times obviously are influenced by the speed of the computer.
 
 The implementation is based on simple loops and arrays as data structures, and finally using sorting to get the results.
 
-The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
-
 ## Dependencies
 
-Events uses the Swift Argument Parser to handle the parameters.
+BadBooks uses the Swift Argument Parser to handle the parameters.
 
 
 ## Building and running
@@ -54,6 +52,9 @@ and the count of the most frequent words to print out. Text files must be UTF-8 
 
 
 ## Who did this
+
+The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
+
 
 * (c) Antti Juustila
 * INTERACT Research Group

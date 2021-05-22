@@ -27,12 +27,27 @@ programming language.
 
 The problem solution has been implemented in steps, each step executed in one function. Additionally, each function has, as the last parameter, a function to call next after that function has done it's part of the job.
 
-The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
+In the beginning, the file is read using the function `readFile`, and it is given the next function (`filterWords`) to call:
+
+```Swift
+// readFile calls filterWords...
+readFile(file: bookFile, function: filterWords)
+```
+Then in `readFile`, the `filterWords` function is called (as `function`) and it is given the next function `calculateFrequencies` to call:
+
+```Swift
+func readFile(file: String, function: ArrayArrayMapNoOpFunc) -> Void {
+  .... 
+   // ...filterWords calls calculateFrequencies...
+   function(words, calculateFrequencies)
+}
+```
+And so on, until the chain ends and all functions have been executed.
 
 
 ## Dependencies
 
-Events uses the Swift Argument Parser to handle the parameters.
+Kick Forward uses the Swift Argument Parser to handle the parameters.
 
 
 ## Building and running
@@ -54,6 +69,9 @@ and the count of the most frequent words to print out. Text files must be UTF-8 
 
 
 ## Who did this
+
+The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
+
 
 * (c) Antti Juustila
 * INTERACT Research Group

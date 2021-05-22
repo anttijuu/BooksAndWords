@@ -25,12 +25,10 @@ Listing 100 most common words.
 This implementation is demonstrating using a *relational database* as a way to solve the problem, using Swift as the
 programming language and SQLite as the database engine.
 
-The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
-
 
 ## Dependencies
 
-Events uses the Swift Argument Parser to handle the parameters and SQLite.swift as the API to SQLite database. See `Package.swift` for the dependencies.
+Persistence uses the Swift Argument Parser to handle the parameters and SQLite.swift as the API to SQLite database. See `Package.swift` for the dependencies.
 
 
 ## Building and running
@@ -86,10 +84,12 @@ And when running the app again with the same text file, basically reading the da
 
 ...shows the advantage of *caching* the results from previous run in the database.
 
-If you run with the `--memory` option set to `true` in-memory database is used and no database file is created. Using an in-memory database is only a little bit faster compared to database in file. Probably performance could be improved by using prepared statements and other SQLite optimizations (left for the interested reader to implement). 
+If you run with the `--memory` option set to `true` in-memory database is used and no database file is created. Using an in-memory database is only a little bit faster compared to database in file. Probably performance could be improved by using prepared statements and other SQLite optimizations (exercise left for the interested reader to implement). 
 
 
 ## Who did this
+
+The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
 
 * (c) Antti Juustila
 * INTERACT Research Group

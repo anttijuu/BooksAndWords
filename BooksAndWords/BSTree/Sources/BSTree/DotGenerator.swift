@@ -34,14 +34,14 @@ class DotGenerator: Visitor {
    }
 
    func visit(node: TreeNode) throws {
+      let str = "".rightJustified(width: level) + label(for: node)
+      try str.appendLine(to: file)
       if let left = node.left {
          level += 1
          try left.accept(self)
          level -= 1
          try ("".rightJustified(width: level) + label(between: node, and: left, onEdge: " L")).appendLine(to: file)
       }
-      let str = "".rightJustified(width: level) + label(for: node)
-      try str.appendLine(to: file)
       if let right = node.right {
          level += 1
          try right.accept(self)

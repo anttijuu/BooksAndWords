@@ -1,6 +1,6 @@
-# InfiniteMirror
+# Infinite Mirror
 
-InfiniteMirror demonstrates one programming style to solve the frequent words task, where
+Infinite Mirror demonstrates one programming style to solve the frequent words task, where
 an app reads a text file containing a book. App then calculates the most often used words and their 
 frequencies from a text file, ignoring words listed in another file. 
 
@@ -25,12 +25,12 @@ Listing 100 most common words.
 This implementation is demonstrating *recursion* as a way to solve the problem using Swift as the
 programming language.
 
-The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
+A function `count` is called recursively to handle smaller and smaller pieces of the array to collect the word counts from the array of words, read from the book file.
 
 
 ## Dependencies
 
-InfiniteMirror uses the Swift Argument Parser to handle the parameters.
+Infinite Mirror uses the Swift Argument Parser to handle the parameters.
 
 
 ## Building and running
@@ -55,8 +55,12 @@ If you have issues with stack overflow, try changing the `recursionLimit` to som
 ```Swift
 let recursionLimit = 10_000
 ```
+This is because with large data sets, the recursive function call stack becomes very deep, and the stack memory reserved for the app may run out of space. Therefore, the level of recursion is limited so that the array of words is processed in pieces that should not cause stack overflow. The `recursionLimit` can be used to control this.
 
 ## Who did this
+
+The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
+
 
 * (c) Antti Juustila
 * INTERACT Research Group

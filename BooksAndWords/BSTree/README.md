@@ -40,11 +40,9 @@ And then opening the svg file (most browsers know how to do this). Note that if 
 
 The `TreeNode`,  `DotGenerator` and the `ToArrayVisitor` classes implement the [Visitor](https://en.wikipedia.org/wiki/Visitor_pattern) design pattern.
 
-The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
-
 ## Dependencies
 
-Events uses the Swift Argument Parser to handle the parameters.
+BSTree uses the Swift Argument Parser to handle the parameters.
 
 
 ## Building and running
@@ -67,7 +65,9 @@ and the count of the most frequent words to print out. Text files must be UTF-8 
 
 ## Who did this
 
+The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
+
 * (c) Antti Juustila
 * INTERACT Research Group
-* Study program for Information Processing Science
+* Study Program for Information Processing Science
 * University of Oulu, Finland

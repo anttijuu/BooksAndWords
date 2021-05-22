@@ -21,10 +21,9 @@ Listing 100 most common words.
 ```
 
 This implementation is demonstrating producing and handling *outsourcing* as a way to solve the problem, using Swift as the
-programming language. Outsourcing means that the app is actually executing terminal commands in `zsh`: `tr`, `grep`, `sort`, `uniq`, `head` and `sed`, with one temporary file to do the job.
+programming language. 
 
-The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
-
+Outsourcing means here that the app is actually executing terminal commands in `zsh`: `tr`, `grep`, `sort`, `uniq`, `head` and `sed`, with one temporary file to do the job. Obviously the app works only in OS which has all these tools installed.
 
 ## Dependencies
 
@@ -50,6 +49,8 @@ and the count of the most frequent words to print out. Text files must be UTF-8 
 
 
 ## Who did this
+
+The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208). Though the book does not contain a programming style like this, I suspect.
 
 * (c) Antti Juustila
 * INTERACT Research Group

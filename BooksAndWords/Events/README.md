@@ -25,8 +25,7 @@ Listing 100 most common words.
 This implementation is demonstrating producing and handling *synchronous callbacks* as a way to solve the problem, using Swift as the
 programming language. The style is often characterized by the Hollywood "do not call us, we call you" kind of programming.
 
-The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
-
+Each of the workers (`LoadHandler`, `WordFilter`, and `WordCounter`) register themselves (or their functions) to the `EventDispatcher`. In registration, the workers tell which kind of events they are interested in. When the event is then dispatched to the `EventDispatcher`, it calls the registered functions with possible parameters.
 
 ## Dependencies
 
@@ -52,6 +51,9 @@ and the count of the most frequent words to print out. Text files must be UTF-8 
 
 
 ## Who did this
+
+The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
+
 
 * (c) Antti Juustila
 * INTERACT Research Group
