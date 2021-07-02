@@ -82,7 +82,7 @@ final class KickForwardParallel: ParsableCommand {
       print("Waiting for threads...")
       group.wait()
       print("Map has before printing \(map.count) elements")
-      printTop(wordCounts: map, function: noOp)
+      printTop(wordCounts: map)
    }
 
    func filterWords(words: ArraySlice<String>, function: ArrayNoOpFunc) -> [String: Int] {
@@ -104,10 +104,11 @@ final class KickForwardParallel: ParsableCommand {
             wordCounts[word] = 1
          }
       }
+      function()
       return wordCounts
    }
 
-   func printTop(wordCounts: [String: Int], function: NoOpFunc) -> Void {
+   func printTop(wordCounts: [String: Int]) -> Void {
       let sorted = wordCounts.sorted( by: { $0.1 > $1.1 })
       var counter = 1
       for (key, value) in sorted {
@@ -117,8 +118,6 @@ final class KickForwardParallel: ParsableCommand {
             break
          }
       }
-      // ...as printTop calls noOp...
-      function()
    }
 
    func noOp() -> Void {
