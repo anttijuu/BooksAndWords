@@ -42,19 +42,13 @@ struct BSTree: ParsableCommand {
          let asString = String(decoding: data, as: UTF8.self)
          wordsToFilter = asString.components(separatedBy: ",")
       }
-      // Prepare an array of words that does not contain the words to filter.
-      var cleanedWords = [String]()
       // Go through all the words and filter outs the ones not to include.
-      for word in words {
-         if wordsToFilter.firstIndex(of: word) == nil && !word.isNumeric && word.count >= 2 {
-            cleanedWords.append(word)
-         }
-      }
       // Prepare the array containing unique words and their frequencies.
       let tree = BinarySearchTree()
-      // For all filtered words...
-      for word in cleanedWords {
-         tree.insert(word)
+      for word in words {
+         if wordsToFilter.firstIndex(of: word) == nil && !word.isNumeric && word.count >= 2 {
+            tree.insert(word)
+         }
       }
       // Now all words have been counted.
       // Sort the array by the count, descending.
