@@ -19,7 +19,6 @@ class DotGenerator: Visitor {
 
    func start(with name: String) {
       do {
-         // FileManager.default.createFile(atPath: file.absoluteString, contents: "".data(using: .utf8), attributes: nil)
          try "".data(using: .utf8)?.write(to: file)
          if let handle = try? FileHandle(forWritingTo: file) {
             fileHandle = handle
