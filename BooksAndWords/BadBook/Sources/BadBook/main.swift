@@ -42,25 +42,20 @@ struct BadBook: ParsableCommand {
          let asString = String(decoding: data, as: UTF8.self)
          wordsToFilter = asString.components(separatedBy: ",")
       }
-      // Prepare an array of words that does not contain the words to filter.
-      var cleanedWords = [String]()
-      // Go through all the words and filter outs the ones not to include.
-      for word in words {
-         if wordsToFilter.firstIndex(of: word) == nil && !word.isNumeric && word.count >= 2 {
-            cleanedWords.append(word)
-         }
-      }
       // Prepare the array containing unique words and their frequencies.
       var wordFrequencies = [WordFrequency]()
-      // For all filtered words...
-      for word in cleanedWords {
-         // ...see if is already in the array...
-         if let foundIndex = wordFrequencies.firstIndex(where: { $0.word == word } ) {
-            // ..if yes, increase the count by one...
-            wordFrequencies[foundIndex].count += 1
-         } else {
-            // ...and if not, add it to the array with count of one.
-            wordFrequencies.append(WordFrequency(word: word, count: 1))
+      // Go through all the words and filter outs the ones not to include.
+      var allWordsCount = 0
+      for word in words {
+         if wordsToFilter.firstIndex(of: word) == nil && !word.isNumeric && word.count >= 2 {
+            allWordsCount += 1
+            if let foundIndex = wordFrequencies.firstIndex(where: { $0.word == word } ) {
+               // ..if yes, increase the count by one...
+               wordFrequencies[foundIndex].count += 1
+            } else {
+               // ...and if not, add it to the array with count of one.
+               wordFrequencies.append(WordFrequency(word: word, count: 1))
+            }
          }
       }
       // Now all words have been counted.
@@ -75,7 +70,7 @@ struct BadBook: ParsableCommand {
             break
          }
       }
-      print("File has \(cleanedWords.count) words and \(wordFrequencies.count) unique words.")
+      print("File has \(allWordsCount) words and \(wordFrequencies.count) unique words.")
       // Print out how long this took.
       let duration = start.distance(to: Date())
       print(" >>>> Time \(duration) secs.")

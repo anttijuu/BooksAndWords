@@ -28,14 +28,4 @@ extension String {
       return Double(self) != nil
    }
 
-   // https://stackoverflow.com/a/50497673/10557366
-   func appendLine(to url: URL) throws {
-      try self.appending("\n").append(to: url)
-   }
-   
-   func append(to url: URL) throws {
-      let data = self.data(using: String.Encoding.utf8)
-      try data?.append(to: url)
-   }
-
 }
