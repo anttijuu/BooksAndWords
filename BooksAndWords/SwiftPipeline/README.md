@@ -1,8 +1,6 @@
 # Pipeline
 
-Pipeline demonstrates one programming style to solve the frequent words task, where
-an app reads a text file containing a book. App then calculates the most often used words and their 
-frequencies from a text file, ignoring words listed in another file. 
+Pipeline demonstrates one programming style to solve the frequent words task, where an app reads a text file containing a book. App then calculates the most often used words and their frequencies from a text file, ignoring words listed in another file. 
 
 Result could look like this:
 
@@ -51,11 +49,10 @@ swift build -c release
 and then run the app:
 
 ```console
-./.build/x86_64-apple-macosx/release/swiftpipeline path-to-book.txt path-to-ignore-file.txt 100 
+./.build/release/swiftpipeline path-to-book.txt path-to-ignore-file.txt 100 
 ```
 
-Assuming the binary is in `./.build/x86_64-apple-macosx/release` and user gives the two text files
-and the count of the most frequent words to print out. Text files must be UTF-8 encoded plain text files.
+Assuming the binary is in `./.build/release` and user gives the two text files and the count of the most frequent words to print out. Text files must be UTF-8 encoded plain text files.
 
 
 ## Who did this

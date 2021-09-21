@@ -22,8 +22,7 @@ Listing 100 most common words.
 ...
 ```
 
-This implementation is demonstrating a variation of the pipeline style, *kick forward* as a way to solve the problem, using Swift as the
-programming language. 
+This implementation is demonstrating a variation of the pipeline style, *kick forward* as a way to solve the problem, using Swift as the programming language. 
 
 The problem solution has been implemented in steps, each step executed in one function. Additionally, each function has, as the last parameter, a function to call next after that function has done it's part of the job.
 
@@ -61,10 +60,10 @@ swift build -c release
 and then run the app:
 
 ```console
-./.build/x86_64-apple-macosx/release/kickforward path-to-book.txt path-to-ignore-file.txt 100 
+./.build/release/kickforward path-to-book.txt path-to-ignore-file.txt 100 
 ```
 
-Assuming the binary is in `./.build/x86_64-apple-macosx/release` and user gives the two text files
+Assuming the binary is in `./.build/release` and user gives the two text files
 and the count of the most frequent words to print out. Text files must be UTF-8 encoded plain text files.
 
 

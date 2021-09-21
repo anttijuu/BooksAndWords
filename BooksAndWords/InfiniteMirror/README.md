@@ -44,10 +44,10 @@ swift build -c release
 and then run the app:
 
 ```console
-./.build/x86_64-apple-macosx/release/infinitemirror path-to-book.txt path-to-ignore-file.txt 100 
+./.build/release/infinitemirror path-to-book.txt path-to-ignore-file.txt 100 
 ```
 
-Assuming the binary is in `./.build/x86_64-apple-macosx/release` and user gives the two text files
+Assuming the binary is (linked) in `./.build/release` and user gives the two text files
 and the count of the most frequent words to print out. Text files must be UTF-8 encoded plain text files.
 
 If you have issues with stack overflow, try changing the `recursionLimit` to something smaller than currently in the code:

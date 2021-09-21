@@ -26,7 +26,7 @@ This implementation is demonstrating *binary search trees* as a way to solve the
 
 Words are read from the book file, then place into the binary search tree in alphabetical order. If the word is already in the tree, the frequency count of the word is increased. When all (unique) words are in the tree, it is exported into an array and then sorted. Finally, the most common words by frequency count are printed.
 
-In addition to producing the result, the app generates a [GraphViz](https://graphviz.org) dot file depicting the structure of the binary tree holding the words of the book. After executing the app, you can convert the .dot file to e.g. svg file (assuming you have GraphViz installed):
+In addition to producing the result, the app generates (if the -dot true option is specified) a [GraphViz](https://graphviz.org) dot file depicting the structure of the binary tree holding the words of the book. After executing the app, you can convert the .dot file to e.g. svg file (assuming you have GraphViz installed):
 
 ```console
 dot -Tsvg dotgraph.txt -otree.svg
@@ -56,10 +56,10 @@ swift build -c release
 and then run the app:
 
 ```console
-./.build/x86_64-apple-macosx/release/bstree path-to-book.txt path-to-ignore-file.txt 100 
+./.build/release/bstree path-to-book.txt path-to-ignore-file.txt 100 
 ```
 
-Assuming the binary is in `./.build/x86_64-apple-macosx/release` and user gives the two text files
+Assuming the binary is (linked) in `./.build/release` and user gives the two text files
 and the count of the most frequent words to print out. Text files must be UTF-8 encoded plain text files.
 
 

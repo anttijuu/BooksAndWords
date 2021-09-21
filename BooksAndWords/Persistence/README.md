@@ -42,11 +42,10 @@ swift build -c release
 and then run the app:
 
 ```console
-./.build/x86_64-apple-macosx/release/persistence path-to-book.txt path-to-ignore-file.txt 100 --memory false
+./.build/release/persistence path-to-book.txt path-to-ignore-file.txt 100 --memory false
 ```
 
-Assuming the binary is in `./.build/x86_64-apple-macosx/release` and user gives the two text files
-and the count of the most frequent words to print out. Text files must be UTF-8 encoded plain text files.
+Assuming the binary is in `./.build/release` and user gives the two text files and the count of the most frequent words to print out. Text files must be UTF-8 encoded plain text files.
 
 After running, the app lists the top words with counts. You can also open the database created by the app using sqlite3 and view the contents of the database:
 
@@ -68,7 +67,7 @@ sqlite> .quit
 
 Database name is based on the book text file name, given as the first parameter to the app.
 
-Note that the first time, the app analyses the text file and inserts the words with counts into the database. If you run the app again, and the database already exists for the book, the app does not handle the file again but queries the top word list from the database. Obviously this is much faster.
+Note that the first time, the app analyses the text file and inserts the words with counts into the database. If you run the app again, and the database already exists for the book, the app does not handle the file again but queries the top word list from the database. Obviously this is much faster. So unfair!
 
 Example of a first run with text file analysis with book WarPeace.txt (War and Peace, by Leo Tolstoy):
 

@@ -22,8 +22,7 @@ Listing 100 most common words.
 ...
 ```
 
-This implementation is demonstrating producing and handling *synchronous callbacks* as a way to solve the problem, using Swift as the
-programming language. The style is often characterized by the Hollywood "do not call us, we call you" kind of programming.
+This implementation is demonstrating producing and handling *synchronous callbacks* as a way to solve the problem, using Swift as the programming language. The style is often characterized by the Hollywood "do not call us, we call you" kind of programming.
 
 Each of the workers (`LoadHandler`, `WordFilter`, and `WordCounter`) register themselves (or their functions) to the `EventDispatcher`. In registration, the workers tell which kind of events they are interested in. When the event is then dispatched to the `EventDispatcher`, it calls the registered functions with possible parameters.
 
@@ -43,10 +42,10 @@ swift build -c release
 and then run the app:
 
 ```console
-./.build/x86_64-apple-macosx/release/events path-to-book.txt path-to-ignore-file.txt 100 
+./.build/release/events path-to-book.txt path-to-ignore-file.txt 100 
 ```
 
-Assuming the binary is in `./.build/x86_64-apple-macosx/release` and user gives the two text files
+Assuming the binary is (linked) in `./.build/release` and user gives the two text files
 and the count of the most frequent words to print out. Text files must be UTF-8 encoded plain text files.
 
 

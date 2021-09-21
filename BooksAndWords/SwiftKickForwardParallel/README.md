@@ -22,8 +22,7 @@ Listing 100 most common words.
 ...
 ```
 
-This implementation is demonstrating a variation of the pipeline style, *kick forward* as a way to solve the problem, using Swift as the
-programming language. Additionally, several threads are used to, in parallel, handle the large file in chunks in various async queues. When each of the queues have done their work, they copy their result into a global wordcount storage. This is protected by a semaphore so that only one async thread at a time can write to the global wordcount storage.
+This implementation is demonstrating a variation of the pipeline style, *kick forward* as a way to solve the problem, using Swift as the programming language. Additionally, several threads are used to, in parallel, handle the large file in chunks in various async queues. When each of the queues have done their work, they copy their result into a global wordcount storage. This is protected by a semaphore so that only one async thread at a time can write to the global wordcount storage.
 
 Compare this implementation to the synchronous one thread implementation in Kick Forward project. The multiple async task queue is more efficient with large files. Synchronous implementation took 2.59091 secs to handle a file as this parallel implementation took 1.91931 secs. 
 
@@ -47,10 +46,10 @@ swift build -c release
 and then run the app:
 
 ```console
-./.build/x86_64-apple-macosx/release/kickforward path-to-book.txt path-to-ignore-file.txt 100 
+./.build/release/kickforward path-to-book.txt path-to-ignore-file.txt 100 
 ```
 
-Assuming the binary is in `./.build/x86_64-apple-macosx/release` and user gives the two text files
+Assuming the binary is in `./.build/release` and user gives the two text files
 and the count of the most frequent words to print out. Text files must be UTF-8 encoded plain text files.
 
 

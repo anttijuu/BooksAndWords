@@ -23,7 +23,7 @@ Listing 100 most common words.
 This implementation is demonstrating producing and handling *outsourcing* as a way to solve the problem, using Swift as the
 programming language. 
 
-Outsourcing means here that the app is actually executing terminal commands in `zsh`: `tr`, `grep`, `sort`, `uniq`, `head` and `sed`, with one temporary file to do the job. Obviously the app works only in OS which has all these tools installed.
+Outsourcing means here that the app is actually outsourcing the job to Unix commands. It is executing terminal commands in `zsh`: `tr`, `grep`, `sort`, `uniq`, `head` and `sed`, with one temporary file to do the job. Obviously the app works only in OS which has all these tools installed.
 
 ## Dependencies
 
@@ -41,10 +41,10 @@ swift build -c release
 and then run the app to print 100 most frequent words in the book file:
 
 ```console
-./.build/x86_64-apple-macosx/release/outsource path-to-book.txt path-to-ignore-file.txt 100 
+./.build/release/outsource path-to-book.txt path-to-ignore-file.txt 100 
 ```
 
-Assuming the binary is in `./.build/x86_64-apple-macosx/release` and user gives the two text files
+Assuming the binary is (linked) in `./.build/release` and user gives the two text files
 and the count of the most frequent words to print out. Text files must be UTF-8 encoded plain text files.
 
 

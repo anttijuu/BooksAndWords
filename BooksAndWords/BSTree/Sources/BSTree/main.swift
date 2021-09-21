@@ -13,6 +13,9 @@ struct BSTree: ParsableCommand {
    @Argument(help: "The number of top words to list.")
    private var topListSize: Int
 
+   @Option(help: "To generate dot file of the tree or not")
+   var dot: Bool = false
+
    init() { }
 
    func run() throws {
@@ -69,13 +72,15 @@ struct BSTree: ParsableCommand {
       let duration = start.distance(to: Date())
       print(" >>>> Time \(duration) secs.")
       // And we are done!
-      let fileName = "dotgraph.txt"
-      print("Exporting tree structure to \(fileName), use dot -Tsvg \(fileName) -otree.svg to view it.")
-      var name = URL(fileURLWithPath: bookFile).lastPathComponent
-      if name.contains(".") {
-         name = String(name.prefix(upTo: name.lastIndex(of: ".")!))
+      if dot {
+         let fileName = "dotgraph.txt"
+         print("Exporting tree structure to \(fileName), use dot -Tsvg \(fileName) -otree.svg to view it.")
+         var name = URL(fileURLWithPath: bookFile).lastPathComponent
+         if name.contains(".") {
+            name = String(name.prefix(upTo: name.lastIndex(of: ".")!))
+         }
+         tree.exportDot(with: name, to: fileName)
       }
-      tree.exportDot(with: name, to: fileName)
    }
 
 }

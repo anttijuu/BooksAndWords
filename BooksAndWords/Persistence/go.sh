@@ -1,1 +1,1 @@
-./.build/x86_64-apple-macosx/release/persistence /Users/juustila/Documents/TOL/TRA_Materiaali/TRA_Harjoitustyo/2019_C/testitiedostot/WarPeace.txt /Users/juustila/Documents/TOL/TRA_Materiaali/TRA_Harjoitustyo/2019_C/testitiedostot/ignore-words.txt 100 --memory false
+./.build/x86_64-apple-macosx/release/persistence ~/workspace/tra-2021/project/booksandwords/src/test/resources/WarPeace.txt ~/workspace/tra-2021/project/booksandwords/src/test/resources/ignore-words.txt 100 --memory false
