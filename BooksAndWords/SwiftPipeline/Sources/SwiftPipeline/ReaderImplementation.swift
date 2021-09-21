@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ReaderImpl: Reader {
+class ReaderImplementation: Reader {
 
    var processor: Processor?
 

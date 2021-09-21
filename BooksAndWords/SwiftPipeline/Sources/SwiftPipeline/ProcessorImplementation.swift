@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ProcessorImpl: Processor {
+class ProcessorImplementation: Processor {
    var filter: Filter?
    var word: String = ""
 

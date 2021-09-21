@@ -22,9 +22,9 @@ struct SwiftPipeline: ParsableCommand {
 
       let start = Date()
 
-      ReaderImpl()
-         .processing(with: ProcessorImpl()
-            .filtering(with: FilterImpl()
+      ReaderImplementation()
+         .processing(with: ProcessorImplementation()
+            .filtering(with: FilterImplementation()
                .preparing(from: stopWordsFile)
                .handling(with: CountingHandler(topCount: topListSize))))
          .reading(from: bookFile)

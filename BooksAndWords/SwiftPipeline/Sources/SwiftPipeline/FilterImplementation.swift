@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FilterImpl: Filter {
+class FilterImplementation: Filter {
 
    private var wordsToFilter: [String] = []
    private var handler: Handler?
