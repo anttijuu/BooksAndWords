@@ -64,10 +64,8 @@ public class ParallelKickForwardApp
                 int firstLine = Math.max(lastLine - sectionLines, 0);
                 String section = lines.subList(firstLine, lastLine).toString();
                 lastLine = firstLine - 1;
-                Thread thread = new Thread(new Runnable(){
-                    public void run() {
-                        func.accept(section, (BiConsumer<String, BiConsumer>) ParallelKickForwardApp::normalize);
-                    }
+                Thread thread = new Thread( () -> {
+                    func.accept(section, (BiConsumer<String, BiConsumer>) ParallelKickForwardApp::normalize);
                 });
                 threads.add(thread);
                 thread.start();
@@ -76,9 +74,7 @@ public class ParallelKickForwardApp
                 thread.join();
             }
             sort(finalTopList, ParallelKickForwardApp::printTop);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }

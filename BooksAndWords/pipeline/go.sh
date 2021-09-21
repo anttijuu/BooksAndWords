@@ -1,1 +1,1 @@
-java -cp target/classes org.anttijuustila.BooksAndWordsApp /Users/juustila/Documents/TOL/TRA_Materiaali/TRA_Harjoitustyo/2019_C/testitiedostot/Bulk.txt 25
+java -cp target/classes org.anttijuustila.BooksAndWordsApp ~/workspace/tra-2021/project/booksandwords/src/test/resources/Bulk.txt ~/workspace/tra-2021/project/booksandwords/src/test/resources/ignore-words.txt 100
