@@ -23,7 +23,7 @@ class DotGenerator: Visitor {
          if let handle = try? FileHandle(forWritingTo: file) {
             fileHandle = handle
             fileHandle.write("digraph \(name) {".data(using: .utf8)!)
-            fileHandle.write("node [shape=record, style=\"rounded,filled\"]".data(using: .utf8)!)
+            fileHandle.write(" node [shape=record, style=\"rounded,filled\"] ".data(using: .utf8)!)
          } else {
          }
       } catch {
@@ -66,11 +66,11 @@ class DotGenerator: Visitor {
    }
 
    private func label(for node: TreeNode) -> String {
-      return name(for: node) + " [ label=\"{ " + node.word + " | " + String(node.count) + " }\" ]"
+      return name(for: node) + " [ label=\"{ " + node.word + " | " + String(node.count) + " }\" ]\n"
    }
 
    private func label(between upperNode: TreeNode, and lowerNode: TreeNode, onEdge edge: String) -> String {
-      name(for: upperNode) + " -> " + name(for: lowerNode) + " [ label=\"" + edge + "\" ]"
+      name(for: upperNode) + " -> " + name(for: lowerNode) + " [ label=\"" + edge + "\" ]\n"
    }
 
 }
