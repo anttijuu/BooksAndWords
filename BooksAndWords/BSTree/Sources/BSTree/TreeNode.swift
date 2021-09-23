@@ -8,6 +8,7 @@
 import Foundation
 
 class TreeNode {
+   let key: Int
    let word: String
    var count: Int
 
@@ -15,16 +16,17 @@ class TreeNode {
    var right: TreeNode?
 
    init(_ word: String) {
+      self.key = word.hashValue
       self.word = word
       count = 1
    }
 
    func insert(_ word: String) -> Int {
-      if word == self.word {
+      if word.hashValue == self.key {
          count += 1
          return 0
       } else {
-         if word < self.word {
+         if word.hashValue < self.key {
             if let left = left {
                return left.insert(word)
             } else {
