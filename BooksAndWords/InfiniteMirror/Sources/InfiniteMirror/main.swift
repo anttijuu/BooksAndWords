@@ -23,13 +23,13 @@ struct InfiniteMirror: ParsableCommand {
       let start = Date()
 
       var words = [String]()
-      var stopWords = [String]()
+      var wordsToFilter = [String]()
       var counts: [String:Int] = [:]
 
       var data = FileManager.default.contents(atPath: stopWordsFile)
       if let data = data {
          let asString = String(decoding: data, as: UTF8.self)
-         stopWords = asString.components(separatedBy: ",")
+         wordsToFilter = asString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
       }
       data = FileManager.default.contents(atPath: bookFile)
       if let data = data {
@@ -39,7 +39,7 @@ struct InfiniteMirror: ParsableCommand {
       }
       let recursionLimit = 10_000
       for index in stride(from: 0, to: words.count - 1, by: recursionLimit) {
-         count(from: words[index..<min(index+recursionLimit,words.count-1)], ignoring: stopWords, to: &counts)
+         count(from: words[index..<min(index+recursionLimit,words.count-1)], ignoring: wordsToFilter, to: &counts)
       }
       let sorted = counts.sorted( by: { $0.1 > $1.1 })
       var counter = 1

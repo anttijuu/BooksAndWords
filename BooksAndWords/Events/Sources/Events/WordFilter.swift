@@ -22,7 +22,7 @@ class WordFilter {
       let data = FileManager.default.contents(atPath: file)
       if let data = data {
          let asString = String(decoding: data, as: UTF8.self)
-         wordsToFilter = asString.components(separatedBy: ",")
+         wordsToFilter = asString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
       }
    }
 

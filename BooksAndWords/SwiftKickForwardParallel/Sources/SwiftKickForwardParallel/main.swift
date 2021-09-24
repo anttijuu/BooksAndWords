@@ -50,7 +50,7 @@ final class KickForwardParallel: ParsableCommand {
       data = FileManager.default.contents(atPath: stopWordsFile)
       if let data = data {
          let asString = String(decoding: data, as: UTF8.self)
-         wordsToFilter = asString.components(separatedBy: ",")
+         wordsToFilter = asString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
       }
 
       let spliceSize = words.count / 4

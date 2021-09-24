@@ -40,7 +40,7 @@ struct BadBook: ParsableCommand {
       var wordsToFilter = [String]()
       if let data = data {
          let asString = String(decoding: data, as: UTF8.self)
-         wordsToFilter = asString.components(separatedBy: ",")
+         wordsToFilter = asString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
       }
       // Prepare the array containing unique words and their frequencies.
       var wordFrequencies = [WordFrequency]()

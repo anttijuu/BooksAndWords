@@ -54,7 +54,7 @@ struct KickForward: ParsableCommand {
       var cleanedWords = [String]()
       if let data = data {
          let asString = String(decoding: data, as: UTF8.self)
-         wordsToFilter = asString.components(separatedBy: ",")
+         wordsToFilter = asString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
       }
       for word in words {
          if wordsToFilter.firstIndex(of: word) == nil && !word.isNumeric && word.count >= 2 {
