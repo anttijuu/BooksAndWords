@@ -43,8 +43,8 @@ class BookDatabase {
       var found = false
       for _ in try connection!.prepare(words.select(word, count).filter(word == readWord)) {
          found = true
-         let found = words.filter(word == readWord)
-         try connection!.run(found.update(count++))
+         let foundRecord = words.filter(word == readWord)
+         try connection!.run(foundRecord.update(count++))
          break
       }
       if !found {
