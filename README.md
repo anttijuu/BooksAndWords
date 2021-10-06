@@ -10,7 +10,9 @@ Each implementation has the following inputs:
 1. A file that lists words that are ignored while counting the words,
 1. The number of top words to report (usually 100 by default).
 
-Some projects may have additional inputs.
+Sample book files and an ignore file can be found zipped in the samples directory.
+
+Some projects may have additional inputs or options.
 
 Details on how to build and execute the projects are explained in the readme of each of the projects.
 
