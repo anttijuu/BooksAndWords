@@ -1,1 +1,1 @@
-./.build/x86_64-apple-macosx/release/persistence ~/workspace/tra-2021/project/booksandwords/src/test/resources/WarPeace.txt ~/workspace/tra-2021/project/booksandwords/src/test/resources/ignore-words.txt 100 --memory false
+./.build/release/persistence ../samples/Bulk.txt ../samples/ignore-words.txt 100 --memory false
