@@ -16,6 +16,8 @@ Some projects may have additional inputs or options.
 
 Details on how to build and execute the projects are explained in the readme of each of the projects.
 
+Each project also has a `go.sh` shell script that launches the app after it has been build, with arguments. Modify or copy this as needed to test the implementation with different files.
+
 ## Dependencies
 
 All implementations use the [Swift Argument Parser](https://github.com/apple/swift-argument-parser) package. Additional dependencies are used in some of the implementations.
