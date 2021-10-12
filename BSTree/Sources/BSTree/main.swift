@@ -57,7 +57,10 @@ struct BSTree: ParsableCommand {
       }
       // Now all words have been counted.
       // Sort the array by the count, descending.
+      let exportStart = Date()
       if let result = tree.asArray(topListSize) {
+         let exportDuration = exportStart.distance(to: Date())
+         print("Export took: \(exportDuration)")
          let sorted = result.sorted( by: { $0.count > $1.count })
          var counter = 1
          // Then print out the most common ones, starting from the beginning.

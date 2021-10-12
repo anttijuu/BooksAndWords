@@ -8,19 +8,27 @@
 import Foundation
 
 /**
- Traverses the tree in order and exports the words with highest counts to a fixed size array.
+ This visitor Traverses the BST tree in order and exports the words with highest counts to a fixed size array.
  
-  If the array size is, for example, 100, the words with 100 highest counts will be added to the array.
-  This is a bit more complicated than just to "export" all tree nodes to the array, but on the other hand, it is
+ If the array size is, for example, 100, the words with 100 highest counts will be added to the array.
+
+ This is a bit more complicated than just to "export" all tree nodes to the array, but on the other hand, it is
    more memory friendly.
  
  Exporting all nodes from the tree to an array has memory complexity of `O(2n)`, this approach
    has memory complexity of `O(n + 100)`.
  
  Time complexity to export all nodes is `O(n)`, and the time complexity to export to
-   a fixed size array is `O(100 * n)`. Since constants are ignored in time complexity analysis, the time complexity
-   of this operation is also `O(n)`.
- */
+ a fixed size array is `O(a * n)` where a is the size of the array. The a is usually quite low (e.g. 100),
+ but still this has an effect on the time performance. When saving memory and using this implementation,
+ exporting the tree to an array took in three test runs 0.016 seconds in average. When exporting the
+ whole array, this took 0.0046 seconds in average. Total execution time being around 2.75 seconds.
+ 
+ Test runs were executed with release builds on Mac Mini M1 with 16GB RAM using the 17MB Bulk.txt.
+ 
+ One has to decide whether it is more important to try to save memory with large datasets with a cost of
+ slightly increased execution time, or allow higher (double) load on the memory to gain faster execution time.
+*/
 class ToArrayVisitor: Visitor {
    
    var array: [WordCount]
