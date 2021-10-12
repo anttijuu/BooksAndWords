@@ -1,4 +1,5 @@
 .build/
 samples/*.txt
 Package.resolved
-
+.swiftpm
+.DS_Store

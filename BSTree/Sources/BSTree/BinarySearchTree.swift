@@ -22,11 +22,11 @@ class BinarySearchTree {
       }
    }
 
-   func asArray() -> [WordCount]? {
+   func asArray(_ size: Int) -> [WordCount]? {
       guard root != nil else {
          return nil
       }
-      let visitor = ToArrayVisitor()
+      let visitor = ToArrayVisitor(with: size)
       do {
          try root!.accept(visitor)
       } catch {

@@ -57,7 +57,7 @@ struct BSTree: ParsableCommand {
       }
       // Now all words have been counted.
       // Sort the array by the count, descending.
-      if let result = tree.asArray() {
+      if let result = tree.asArray(topListSize) {
          let sorted = result.sorted( by: { $0.count > $1.count })
          var counter = 1
          // Then print out the most common ones, starting from the beginning.
