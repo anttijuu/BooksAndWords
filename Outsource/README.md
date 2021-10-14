@@ -1,8 +1,6 @@
 # Outsource
 
-Outsource demonstrates one programming style to solve the frequent words task, where
-an app reads a text file containing a book. App then calculates the most often used words and their 
-frequencies from a text file, ignoring words listed in another file. 
+Outsource demonstrates one programming style to solve the frequent words task, where an app reads a text file containing a book. App then calculates the most often used words and their frequencies from a text file, ignoring words listed in another file. 
 
 Result could look like this:
 
@@ -20,10 +18,19 @@ Listing 100 most common words.
 ...
 ```
 
-This implementation is demonstrating producing and handling *outsourcing* as a way to solve the problem, using Swift as the
-programming language. 
+This implementation is demonstrating producing and handling *outsourcing* as a way to solve the problem, using Swift as the programming language. 
 
 Outsourcing means here that the app is actually outsourcing the job to Unix commands. It is executing terminal commands in `zsh`: `tr`, `grep`, `sort`, `uniq`, `head` and `sed`, with one temporary file to do the job. Obviously the app works only in OS which has all these tools installed.
+
+This implementation does not actually comply with the others. It doesn't handle the ignore file, that is still unfinished. Also it does count one character words, as the other implementations do not.
+
+You can try this out using the bare command line command too, instead of this app. From the root directory, do:
+
+```console
+cat samples/WarPeace.txt | tr 'A-Z' 'a-z' | sed 's/--/ /g' | sed 's/[^a-z ]//g' | tr -s '[[:space:]]' '\n' | sort -r | uniq -c | sort -r | more -n100
+```
+
+And you will see the result from there too. This app just outsources the job to those commands.
 
 ## Dependencies
 
