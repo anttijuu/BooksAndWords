@@ -30,16 +30,16 @@ This implementation is demonstrating [functional programming](https://en.wikiped
 
 
 ```Swift
-      words.filter { word in
-         word.count >= 2 && !wordsToFilter.contains(word)
-      }.reduce(into: [:]) {
-         counts, word in counts[word, default: 0] += 1
-      }.sorted(by: { lhs, rhs in
-         lhs.value > rhs.value
-      }).prefix(100).forEach{ key, value in
-         print("\(String(counter).rightJustified(width: 3)). \(key.leftJustified(width: 20, fillChar: ".")) \(value)")
-         counter += 1
-      }
+   words.filter { word in
+      word.count >= 2 && !wordsToFilter.contains(word)
+   }.reduce(into: [:]) {
+      counts, word in counts[word, default: 0] += 1
+   }.sorted(by: { lhs, rhs in
+      lhs.value > rhs.value
+   }).prefix(100).forEach{ key, value in
+      print("\(String(counter).rightJustified(width: 3)). \(key.leftJustified(width: 20, fillChar: ".")) \(value)")
+      counter += 1
+   }
 ```
 
 ## Dependencies
