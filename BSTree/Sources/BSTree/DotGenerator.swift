@@ -62,7 +62,7 @@ class DotGenerator: Visitor {
    }
 
    private func name(for node: TreeNode) -> String {
-      return "node_" + node.word
+      return "node_" + convertSpecialCharacters(node.word)
    }
 
    private func label(for node: TreeNode) -> String {
@@ -71,6 +71,21 @@ class DotGenerator: Visitor {
 
    private func label(between upperNode: TreeNode, and lowerNode: TreeNode, onEdge edge: String) -> String {
       name(for: upperNode) + " -> " + name(for: lowerNode) + " [ label=\"" + edge + "\" ]\n"
+   }
+
+   private func convertSpecialCharacters(_ string: String) -> String {
+      var newString = string
+      let char_dictionary = ["$" : "s",
+         "&amp;" : "&",
+         "&lt;" : "<",
+         "&gt;" : ">",
+         "&quot;" : "\"",
+         "&apos;" : "'"
+      ];
+      for (escaped_char, unescaped_char) in char_dictionary {
+         newString = newString.replacingOccurrences(of: escaped_char, with: unescaped_char, options: NSString.CompareOptions.literal, range: nil)
+      }
+      return newString
    }
 
 }
