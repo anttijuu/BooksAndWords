@@ -31,7 +31,7 @@ ReaderImpl()
          .handling(with: HandlerImpl(topCount: topListSize))))
    .reading(from: bookFile)
 ```
-Also, in this design, interfaces are used to separate abstract functionality from concrete implementation. Which could be many different. Here, each interface is implement in one specific way.
+This implementation is also object oriented, where interfaces (protocols) are used to separate abstract functionality from concrete implementation. Which could be many different kinds. Here, each interface is implement in one specific way.
 
 ## Dependencies
 
