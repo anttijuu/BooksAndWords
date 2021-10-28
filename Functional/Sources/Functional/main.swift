@@ -39,8 +39,8 @@ struct Functional: ParsableCommand {
       var counter = 1
       words.filter { word in
          word.count >= 2 && !wordsToFilter.contains(word)
-      }.reduce(into: [:]) {
-         counts, word in counts[word, default: 0] += 1
+      }.reduce(into: [:]) { counts, word in
+         counts[word, default: 0] += 1
       }.sorted(by: { lhs, rhs in
          lhs.value > rhs.value
       }).prefix(topListSize).forEach{ key, value in

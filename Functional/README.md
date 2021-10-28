@@ -20,26 +20,26 @@ Listing 100 most common words.
 ...
 ```
 
-This implementation is demonstrating [functional programming](https://en.wikipedia.org/wiki/Functional_programming) as a way to solve the problem, using Swift as the programming language. The code uses the Swift container methods:
+This implementation is demonstrating [functional programming](https://en.wikipedia.org/wiki/Functional_programming) as a way to solve the problem, using Swift as the programming language. The code uses the Swift collection methods:
 
 1. `filter` to filter out words to ignore from the array of words read from the file,
-1. `reduce` to create a dictionary of words with word counts,
+1. `reduce` to create a *dictionary* of words with word counts,
 1. `sorted` to sort the dictionary by the word count,
 1. `prefix` to select only top 100 elements from the dictionary, and finally
 1. `forEach` to print out the top 100 elements to the console.
 
 
 ```Swift
-   words.filter { word in
-      word.count >= 2 && !wordsToFilter.contains(word)
-   }.reduce(into: [:]) {
-      counts, word in counts[word, default: 0] += 1
-   }.sorted(by: { lhs, rhs in
-      lhs.value > rhs.value
-   }).prefix(100).forEach{ key, value in
-      print("\(String(counter).rightJustified(width: 3)). \(key.leftJustified(width: 20, fillChar: ".")) \(value)")
-      counter += 1
-   }
+words.filter { word in
+   word.count >= 2 && !wordsToFilter.contains(word)
+}.reduce(into: [:]) { counts, word in
+   counts[word, default: 0] += 1
+}.sorted(by: { lhs, rhs in
+   lhs.value > rhs.value
+}).prefix(topListSize).forEach{ key, value in
+   print("\(String(counter).rightJustified(width: 3)). \(key.leftJustified(width: 20, fillChar: ".")) \(value)")
+   counter += 1
+}
 ```
 
 ## Dependencies
