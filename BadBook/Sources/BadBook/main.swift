@@ -59,11 +59,21 @@ struct BadBook: ParsableCommand {
          }
       }
       // Now all words have been counted.
-      // Sort the array by the count, descending.
-      let sorted = wordFrequencies.sorted( by: { $0.count > $1.count })
+      // Sort the array by the count, descending using Bubble sort, a horribly slow sort algorithm.
+      // let sorted = wordFrequencies.sorted( by: { $0.count > $1.count })
+      var sortSize = wordFrequencies.count
+      repeat {
+         var newSize = 0
+         for index in 1...sortSize-1 where wordFrequencies[index-1].count < wordFrequencies[index].count {
+            wordFrequencies.swapAt(index-1, index)
+            newSize = index
+         }
+         sortSize = newSize
+      } while sortSize > 1
+      
       var counter = 1
       // Then print out the most common ones, starting from the beginning.
-      for wordFrequency in sorted {
+      for wordFrequency in wordFrequencies {
          print("\(String(counter).rightJustified(width: 3)). \(wordFrequency.word.leftJustified(width: 20, fillChar: ".")) \(wordFrequency.count)")
          counter += 1
          if counter > topListSize {
