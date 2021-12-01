@@ -43,7 +43,7 @@ struct Functional: ParsableCommand {
          counts[word, default: 0] += 1
       }.sorted(by: { lhs, rhs in
          lhs.value > rhs.value
-      }).prefix(topListSize).forEach{ key, value in
+      }).prefix(topListSize).forEach { key, value in
          print("\(String(counter).rightJustified(width: 3)). \(key.leftJustified(width: 20, fillChar: ".")) \(value)")
          counter += 1
       }

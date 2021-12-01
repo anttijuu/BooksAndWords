@@ -37,10 +37,13 @@ struct InfiniteMirror: ParsableCommand {
          asString = asString.lowercased()
          words = asString.split{ $0.isWhitespace || $0.isPunctuation }.map{ String($0) }
       }
-      let recursionLimit = 10_000
+      let recursionLimit = 30_000
+      
+      // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
       for index in stride(from: 0, to: words.count - 1, by: recursionLimit) {
          count(from: words[index..<min(index+recursionLimit,words.count-1)], ignoring: wordsToFilter, to: &counts)
       }
+      
       let sorted = counts.sorted( by: { $0.1 > $1.1 })
       var counter = 1
       for (key, value) in sorted {
@@ -54,6 +57,7 @@ struct InfiniteMirror: ParsableCommand {
       print(" >>>> Time \(duration) secs.")
    }
 
+   // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
    func count(from words: ArraySlice<String>, ignoring stopWords: [String], to wordCounts: inout [String:Int]) {
       if words.count == 0 {
          return

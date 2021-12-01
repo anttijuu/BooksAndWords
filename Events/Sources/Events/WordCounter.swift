@@ -16,7 +16,7 @@ class WordCounter {
    init(dispatcher: EventDispatcher, topSize: Int) {
       self.dispatcher = dispatcher
       topListSize = topSize
-      self.dispatcher.registerUnaryHandler(for: Event.VerifiedWord, handler: handle)
+      self.dispatcher.registerUnaryHandler(for: Event.ProcessVerifiedWord, handler: handle)
       self.dispatcher.registerFinishHandler(for: printTopList)
    }
 

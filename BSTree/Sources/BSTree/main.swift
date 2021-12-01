@@ -26,8 +26,6 @@ struct BSTree: ParsableCommand {
       // Start the timing
       let start = Date()
 
-      // TODO: fix: for some reason ignores (?) some ignore words like << and >>
-      
       // Start reading book into memory from file.
       var data = FileManager.default.contents(atPath: bookFile)
       // Read words into an array of Strings

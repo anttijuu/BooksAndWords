@@ -15,7 +15,7 @@ class WordFilter {
    init(dispatcher: EventDispatcher) {
       self.dispatcher = dispatcher
       self.dispatcher.registerUnaryHandler(for: Event.LoadStopWords, handler: handle)
-      self.dispatcher.registerUnaryHandler(for: Event.RawWord, handler: handleRawWord)
+      self.dispatcher.registerUnaryHandler(for: Event.ProcessRawWord, handler: handleRawWord)
    }
 
    func handle(file: String) -> Void {
@@ -28,7 +28,7 @@ class WordFilter {
 
    func handleRawWord(word: String) -> Void {
       if wordsToFilter.firstIndex(of: word) == nil && !word.isNumeric && word.count >= 2 {
-         dispatcher.dispatch(Event.VerifiedWord, param: word)
+         dispatcher.dispatch(Event.ProcessVerifiedWord, param: word)
       }
    }
    

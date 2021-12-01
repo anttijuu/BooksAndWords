@@ -53,7 +53,7 @@ final class KickForwardParallel: ParsableCommand {
          wordsToFilter = asString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
       }
 
-      let spliceSize = words.count / 4
+      let spliceSize = words.count / 8
       print("spliceSize is \(spliceSize) for \(words.count) words")
       var map: [String: Int] = [:]
       print("Starting dispatch queues")

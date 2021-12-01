@@ -25,7 +25,7 @@ class LoadHandler {
          words = asString.split{ $0.isWhitespace || $0.isPunctuation }.map{ String($0) }
       }
       for word in words {
-         dispatcher.dispatch(Event.RawWord, param: word)
+         dispatcher.dispatch(Event.ProcessRawWord, param: word)
       }
       words.removeAll()
       dispatcher.dispatch(Event.Finish, param: nil)
