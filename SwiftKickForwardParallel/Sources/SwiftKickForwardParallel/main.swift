@@ -5,7 +5,7 @@ import ArgumentParser
 typealias NoOpFunc = () -> Void
 typealias ArrayFunc = (ArraySlice<String>) -> [String: Int]
 typealias ArrayNoOpFunc = (ArraySlice<String>, NoOpFunc) -> [String: Int]
-typealias ArrayArrayNoOpFunc = (ArraySlice<String>, ArrayNoOpFunc) async -> [String: Int]
+typealias ArrayArrayNoOpFunc = (ArraySlice<String>, ArrayNoOpFunc) -> [String: Int]
 typealias MapNoOpFunc = ([String: Int], NoOpFunc) -> [String: Int]
 typealias ArrayMapNoOpFunc = ([String], MapNoOpFunc) -> [String: Int]
 typealias ArrayArrayMapNoOpFunc = ([String], ArrayMapNoOpFunc) -> [String: Int]
@@ -58,12 +58,6 @@ final class KickForwardParallel: ParsableCommand {
       var map: [String: Int] = [:]
       print("Starting dispatch queues")
 
-      for index in stride(from: 0, to: words.count - 1, by: spliceSize) {
-         Task(priority: .high, operation: {
-            var pieces = await function(words[index..<min(index+spliceSize,words.count-1)], self.calculateFrequencies)
-         })
-      }
-
       let queue = DispatchQueue(label: "com.anttijuustila.kickforward", qos: .userInteractive, attributes: .concurrent)
       let group = DispatchGroup()
       let mapSemaphore = DispatchSemaphore(value: 1)
@@ -92,7 +86,7 @@ final class KickForwardParallel: ParsableCommand {
       printTop(wordCounts: map)
    }
 
-   func filterWords(words: ArraySlice<String>, function: ArrayNoOpFunc) async -> [String: Int] {
+   func filterWords(words: ArraySlice<String>, function: ArrayNoOpFunc) -> [String: Int] {
       var cleanedWords = [String]()
       for word in words {
          if wordsToFilter.firstIndex(of: word) == nil && !word.isNumeric && word.count >= 2 {
