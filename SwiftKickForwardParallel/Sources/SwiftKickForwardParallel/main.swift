@@ -53,18 +53,18 @@ final class KickForwardParallel: ParsableCommand {
          wordsToFilter = asString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
       }
 
-      let spliceSize = words.count / 8
-      print("spliceSize is \(spliceSize) for \(words.count) words")
+      let sliceSize = words.count / 8
+      print("spliceSize is \(sliceSize) for \(words.count) words")
       var map: [String: Int] = [:]
       print("Starting dispatch queues")
       let queue = DispatchQueue(label: "com.anttijuustila.kickforward", qos: .userInteractive, attributes: .concurrent)
       let group = DispatchGroup()
       let mapSemaphore = DispatchSemaphore(value: 1)
       // ...filterWords calls calculateFrequencies...
-      for index in stride(from: 0, to: words.count - 1, by: spliceSize) {
+      for index in stride(from: 0, to: words.count - 1, by: sliceSize) {
          group.enter()
          queue.async {
-            let pieces = function(words[index..<min(index+spliceSize,words.count-1)], self.calculateFrequencies)
+            let pieces = function(words[index..<min(index+sliceSize,words.count-1)], self.calculateFrequencies)
             print("Waiting for map...")
             mapSemaphore.wait()
             for (key, value) in pieces {
