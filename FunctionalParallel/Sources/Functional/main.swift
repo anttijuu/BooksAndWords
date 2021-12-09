@@ -22,47 +22,45 @@ struct Functional: ParsableCommand {
 
       let start = Date()
 
-      var data = FileManager.default.contents(atPath: bookFile)
-      var words = [String]()
-      var wordsToFilter = [String]()
+      let bookData = FileManager.default.contents(atPath: bookFile)
+      // var wordsToFilter = [String]()
       
-      if let data = data {
-         var asString = String(decoding: data, as: UTF8.self)
-         asString = asString.lowercased()
-         words = asString.split{ $0.isWhitespace || $0.isPunctuation }.map{ String($0) }
+      guard let bookData = bookData else {
+         print("Failed to read book file contents")
+         return
       }
-      data = FileManager.default.contents(atPath: stopWordsFile)
-      if let data = data {
-         let asString = String(decoding: data, as: UTF8.self)
-         wordsToFilter = asString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
+      var asString = String(decoding: bookData, as: UTF8.self)
+      asString = asString.lowercased()
+      let words = asString.split{ $0.isWhitespace || $0.isPunctuation }.map{ String($0) }
+
+      let filterData = FileManager.default.contents(atPath: stopWordsFile)
+      guard let filterData = filterData else {
+         print("Failed to read ignore word file contents")
+         return
       }
-      
-      
+      let filterAsString = String(decoding: filterData, as: UTF8.self)
+      let wordsToFilter = filterAsString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
+
+      let asyncCounter = AsyncCounter()
+
       let spliceSize = words.count / 8
       print("spliceSize is \(spliceSize) for \(words.count) words")
-      var map: [String: Int] = [:]
-      for index in stride(from: 0, to: words.count - 1, by: spliceSize) {
-         
-      }
-      
-      
-      var counter = 1
-      words.filter { word in
-         word.count >= 2 && !wordsToFilter.contains(word)
-      }.reduce(into: [:]) { counts, word in
-         counts[word, default: 0] += 1
-      }.sorted(by: { lhs, rhs in
-         lhs.value > rhs.value
-      }).prefix(topListSize).forEach { key, value in
-         print("\(String(counter).rightJustified(width: 3)). \(key.leftJustified(width: 20, fillChar: ".")) \(value)")
-         counter += 1
+      Task {
+         await asyncCounter.calculateFromArray(from: words, filtering: wordsToFilter)
+         var counter = 1
+         await asyncCounter.allWordCounts.sorted(by: { lhs, rhs in
+            lhs.value > rhs.value
+         }).prefix(topListSize).forEach { key, value in
+            print("\(String(counter).rightJustified(width: 3)). \(key.leftJustified(width: 20, fillChar: ".")) \(value)")
+            counter += 1
+         }
       }
 
       let duration = start.distance(to: Date())
       print(" >>>> Time \(duration) secs.")
    }
    
-   func calculateFromSlice(slice: ArraySlice<String>, _ wordsToFilter: [String]) -> [String : Int] {
+   func calculateFromSlice(slice: ArraySlice<String>, _ wordsToFilter: [String]) async -> [String : Int] {
       return slice.filter { word in
             word.count >= 2 && !wordsToFilter.contains(word)
          }.reduce(into: [:]) { counts, word in
