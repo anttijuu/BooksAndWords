@@ -1,6 +1,8 @@
-# Functional
+# FunctionalParallel
 
-Functional demonstrates one programming style to solve the frequent words task, where an app reads a text file containing a book. App then calculates the most often used words and their frequencies from a text file, ignoring words listed in another file. 
+FunctionalParallel demonstrates one programming style to solve the frequent words task, where an app reads a text file containing a book. App then calculates the most often used words and their frequencies from a text file, ignoring words listed in another file. 
+
+This implementation is, in principle, the same as in Functional demonstration. What is added is that the word array read from a book file is sliced into eight, and each slice is then processed in parallel in separate Swift `async` tasks. This makes the implementation faster. Async tasks are implemented in `AsyncCounter` class.
 
 Result could look like this:
 
@@ -20,7 +22,7 @@ Listing 100 most common words.
 ...
 ```
 
-This implementation is demonstrating [functional programming](https://en.wikipedia.org/wiki/Functional_programming) as a way to solve the problem, using Swift as the programming language. The code uses the Swift collection methods:
+This implementation is demonstrating [functional programming](https://en.wikipedia.org/wiki/Functional_programming) with parallel threads as a way to solve the problem, using Swift as the programming language. The code uses the Swift collection methods:
 
 1. `filter` to filter out words to ignore from the array of words read from the file,
 1. `reduce` to create a *dictionary* of words with word counts,
@@ -28,19 +30,8 @@ This implementation is demonstrating [functional programming](https://en.wikiped
 1. `prefix` to select only top 100 elements from the dictionary, and finally
 1. `forEach` to print out the top 100 elements to the console.
 
+The `AsyncCounter` class takes care of counting the words considering words to ignore. The async tasks produce dictionaries (word and word count in `[String: Int]`) that are then combined to the final dictionary containing the word counts from all the subtasks.
 
-```Swift
-words.filter { word in
-   word.count >= 2 && !wordsToFilter.contains(word)
-}.reduce(into: [:]) { counts, word in
-   counts[word, default: 0] += 1
-}.sorted(by: { lhs, rhs in
-   lhs.value > rhs.value
-}).prefix(topListSize).forEach{ key, value in
-   print("\(String(counter).rightJustified(width: 3)). \(key.leftJustified(width: 20, fillChar: ".")) \(value)")
-   counter += 1
-}
-```
 
 ## Dependencies
 

@@ -7,35 +7,37 @@
 
 import Foundation
 
-actor AsyncCounter {
+// A class to handle the async counting of words from the array in slices.
+class AsyncCounter {
 
-   var allWordCounts = [String : Int]()
-
-   func calculateFromArray(from words: [String], filtering wordsToFilter: [String]) async {
-      var partialResults = [[String: Int]]()
-
-      await withTaskGroup(of: Void.self, body: { group in
+   func calculateFromArray(from words: [String], filtering wordsToFilter: [String]) async throws -> [String: Int] {
+      // Here the final results from subtasks is combined.
+      var results = [String: Int]()
+      
+      try await withThrowingTaskGroup(of: [String: Int].self, body: { group in
+         // Count the slice size of the array for the subtasks to handle.
          let spliceSize = words.count / 8
-         print("spliceSize is \(spliceSize) for \(words.count) words")
          for index in stride(from: 0, to: words.count - 1, by: spliceSize) {
-            group async {
-               async let result = calculateFromSlice(slice: words[index..<min(index+spliceSize,words.count-1)], wordsToFilter)
-               print("Partial result \(index) size is \(result.count)")
+            group.addTask(priority: .userInitiated) { () -> [String: Int] in
+               async let result = self.calculateFromSlice(slice: words[index..<min(index+spliceSize,words.count-1)], wordsToFilter)
                return await result
             }
          }
-      })
-      for partialResult in partialResults {
-         for (key, value) in partialResult {
-            if allWordCounts[key] != nil {
-               allWordCounts[key] = allWordCounts[key]! + value
-            } else {
-               allWordCounts[key] = value
+         // Combine the results from the subtasks as they finish.
+         for try await partial in group {
+            for (key, value) in partial {
+               if results[key] != nil {
+                  results[key] = results[key]! + value
+               } else {
+                  results[key] = value
+               }
             }
          }
-      }
+      })
+      return results
    }
 
+   // The subtask for calculating word frequencies from a slice fo the array of words.
    private func calculateFromSlice(slice: ArraySlice<String>, _ wordsToFilter: [String]) async -> [String: Int] {
       return slice.filter { word in
          word.count >= 2 && !wordsToFilter.contains(word)

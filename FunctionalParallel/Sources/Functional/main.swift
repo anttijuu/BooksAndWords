@@ -41,20 +41,35 @@ struct Functional: ParsableCommand {
       let filterAsString = String(decoding: filterData, as: UTF8.self)
       let wordsToFilter = filterAsString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
 
+      // AsyncCounter uses the Swift async await with task groups to handle word counting
+      // in separate parallel subtasks. The word array is sliced into several pieces which are
+      // handled by subtasks, and the partial results are then combined to a dictionary and returned here.
       let asyncCounter = AsyncCounter()
 
-      let spliceSize = words.count / 8
-      print("spliceSize is \(spliceSize) for \(words.count) words")
-      Task {
-         await asyncCounter.calculateFromArray(from: words, filtering: wordsToFilter)
-         var counter = 1
-         await asyncCounter.allWordCounts.sorted(by: { lhs, rhs in
-            lhs.value > rhs.value
-         }).prefix(topListSize).forEach { key, value in
-            print("\(String(counter).rightJustified(width: 3)). \(key.leftJustified(width: 20, fillChar: ".")) \(value)")
-            counter += 1
+      // In a console app a semaphore is needed so that the main thread stops waiting for the
+      // async tasks to finish before quitting the app. Otherwise, the console app main thread
+      // runs to the end and exits the app before subtasks have finished the word counting.
+      let taskSemaphore = DispatchSemaphore(value: 0)
+      Task(priority: .userInitiated) {
+         // Calculation of unique word frequencies is done in async counter. What is returned is
+         // a dictionary of words and their counts.
+         // After getting the results, the main thread here sorts the list by the word frequency
+         // in descending order and prints out the top words.
+         if let wordCounts = try? await asyncCounter.calculateFromArray(from: words, filtering: wordsToFilter) {
+            var counter = 1
+            wordCounts.sorted(by: { lhs, rhs in
+               lhs.value > rhs.value
+            }).prefix(topListSize).forEach { key, value in
+               print("\(String(counter).rightJustified(width: 3)). \(key.leftJustified(width: 20, fillChar: ".")) \(value)")
+               counter += 1
+            }
+         } else {
+            print("Failed to async calculate words to dictionary.")
          }
+         // Waiting for the async tasks to finish.
+         taskSemaphore.signal()
       }
+      taskSemaphore.wait()
 
       let duration = start.distance(to: Date())
       print(" >>>> Time \(duration) secs.")
