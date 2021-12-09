@@ -66,9 +66,10 @@ struct Functional: ParsableCommand {
          } else {
             print("Failed to async calculate words to dictionary.")
          }
-         // Waiting for the async tasks to finish.
+         // Signal that the async tasks are finished.
          taskSemaphore.signal()
       }
+      // Waiting for the async tasks to finish.
       taskSemaphore.wait()
 
       let duration = start.distance(to: Date())
