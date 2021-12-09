@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
    name: "SwiftKickForwardParallel",
    platforms: [
-      .macOS(.v10_15)
+      .macOS("12.0.0")
    ],
    products: [
       .executable(name: "kickforward", targets: ["SwiftKickForwardParallel"])

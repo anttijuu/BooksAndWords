@@ -57,6 +57,7 @@ final class KickForwardParallel: ParsableCommand {
       print("spliceSize is \(sliceSize) for \(words.count) words")
       var map: [String: Int] = [:]
       print("Starting dispatch queues")
+
       let queue = DispatchQueue(label: "com.anttijuustila.kickforward", qos: .userInteractive, attributes: .concurrent)
       let group = DispatchGroup()
       let mapSemaphore = DispatchSemaphore(value: 1)
