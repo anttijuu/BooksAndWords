@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Functional",
     platforms: [
-      .macOS("12.0.0")
+      .macOS(.v12)
     ],
     dependencies: [
       .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0")
