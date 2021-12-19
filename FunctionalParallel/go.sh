@@ -1,1 +1,1 @@
-./.build/release/functional ../samples/Bulk.txt ../samples/ignore-words.txt 100
+./.build/release/functionalparallel ../samples/Bulk.txt ../samples/ignore-words.txt 100

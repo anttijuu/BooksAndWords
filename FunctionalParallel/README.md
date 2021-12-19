@@ -2,7 +2,7 @@
 
 FunctionalParallel demonstrates one programming style to solve the frequent words task, where an app reads a text file containing a book. App then calculates the most often used words and their frequencies from a text file, ignoring words listed in another file. 
 
-This implementation is, in principle, the same as in Functional demonstration. What is different to Functional is that the word array read from a book file is sliced into eight, and each slice is then processed *in parallel* in separate Swift `async` tasks. This makes the implementation faster. Async tasks are implemented in `AsyncCounter` class.
+This implementation is, in principle, the same as in Functional demonstration. What is different to Functional is that the word array read from a book file is sliced into eight, and each slice is then processed *in parallel* in separate Swift `async` tasks. This makes the implementation faster.
 
 Result could look like this:
 
@@ -30,7 +30,7 @@ This implementation is demonstrating [functional programming](https://en.wikiped
 1. `prefix` to select only top 100 elements from the dictionary (in `main.swift`), and finally
 1. `forEach` to print out the top 100 elements to the console (in `main.swift`).
 
-The `AsyncCounter` class takes care of counting the words considering words to ignore. The async tasks produce dictionaries (word and word count in `[String: Int]`) that are then combined to a final dictionary containing the word counts from all the subtasks. This is then returned to `run()` in `main.swift` and processed to the end there.
+The `withThrowingTaskGroup` group of async tasks takes care of counting the words considering words to ignore. The async tasks produce dictionaries (word and word count in `[String: Int]`) that are then combined to a final dictionary containing the word counts from all the asynchronous subtasks. This is then returned to `run()` in `main.swift` and processed to the end there.
 
 
 ## Dependencies
