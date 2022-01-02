@@ -26,51 +26,54 @@ struct BSTree: ParsableCommand {
       // Start the timing
       let start = Date()
 
-      // Start reading book into memory from file.
-      var data = FileManager.default.contents(atPath: bookFile)
-      // Read words into an array of Strings
-      var words = [String]()
-      if let data = data {
-         var asString = String(decoding: data, as: UTF8.self)
-         // Normalize all chars to lowercase
-         asString = asString.lowercased()
-         // Split the long string (the book contents) based on whitespace and
-         // punctuation into the array of Strings.
-         words = asString.split{ $0.isWhitespace || $0.isPunctuation }.map{ String($0) }
-      }
       // Read the stopwords, a.k.a. filter words from another file.
-      data = FileManager.default.contents(atPath: stopWordsFile)
+      var data = FileManager.default.contents(atPath: stopWordsFile)
       var wordsToFilter = [String]()
       if let data = data {
          let asString = String(decoding: data, as: UTF8.self)
          wordsToFilter = asString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
       }
-      // Go through all the words and filter outs the ones not to include.
-      // Prepare the array containing unique words and their frequencies.
+
+      // Start reading book into memory from file.
+      data = FileManager.default.contents(atPath: bookFile)
+      // Read words
       let tree = BinarySearchTree()
-      for word in words {
-         if wordsToFilter.firstIndex(of: word) == nil && !word.isNumeric && word.count >= 2 {
-            tree.insert(word)
-         }
-      }
-      // Now all words have been counted.
-      // Sort the array by the count, descending.
-      let exportStart = Date()
-      if let result = tree.asArray(topListSize) {
-         let exportDuration = exportStart.distance(to: Date())
-         print("Export took: \(exportDuration)")
-         let sorted = result.sorted( by: { $0.count > $1.count })
-         var counter = 1
-         // Then print out the most common ones, starting from the beginning.
-         for wordFrequency in sorted {
-            print("\(String(counter).rightJustified(width: 3)). \(wordFrequency.word.leftJustified(width: 20, fillChar: ".")) \(wordFrequency.count)")
-            counter += 1
-            if counter > topListSize {
-               break
+      if let data = data {
+         let asString = String(decoding: data, as: UTF8.self)
+         // Go through the string, pick words and filter outs the ones not to include.
+         var word = String()
+         for letter in asString {
+            if letter.isLetter {
+               word.append(letter)
+            } else {
+               // Normalize word to lowercase
+               word = word.lowercased()
+               if wordsToFilter.firstIndex(of: word) == nil && word.count >= 2 {
+                  tree.insert(word)
+               }
+               word = ""
             }
          }
+         // Now all words have been counted into the tree.
+         // Use the asArray to get the most frequent words from the tree.
+         // Then sort the array by the count, descending.
+         let exportStart = Date()
+         if let result = tree.asArray(topListSize) {
+            let exportDuration = exportStart.distance(to: Date())
+            print("Export took: \(exportDuration)")
+            let sorted = result.sorted( by: { $0.count > $1.count })
+            var counter = 1
+            // Then print out the most common ones, starting from the beginning.
+            for wordFrequency in sorted {
+               print("\(String(counter).rightJustified(width: 3)). \(wordFrequency.word.leftJustified(width: 20, fillChar: ".")) \(wordFrequency.count)")
+               counter += 1
+               if counter > topListSize {
+                  break
+               }
+            }
+         }
+         print("Count of words: \(tree.wordCount), count of unique words: \(tree.uniqueWordCount)")
       }
-      print("Count of words: \(tree.wordCount), count of unique words: \(tree.uniqueWordCount)")
       // Print out how long this took.
       let duration = start.distance(to: Date())
       print(" >>>> Time \(duration) secs.")
