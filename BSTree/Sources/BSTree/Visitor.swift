@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol Visitor {
+protocol Visitor: AnyObject {
    func visit(node: TreeNode) throws
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class BinarySearchTree {
+final class BinarySearchTree {
    var root: TreeNode?
    var wordCount = 0
    var uniqueWordCount = 0

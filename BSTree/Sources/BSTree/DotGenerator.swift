@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DotGenerator: Visitor {
+final class DotGenerator: Visitor {
 
    let file: URL
    var level: Int = 0

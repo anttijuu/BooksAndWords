@@ -29,7 +29,7 @@ import Foundation
  One has to decide whether it is more important to try to save memory with large datasets with a cost of
  slightly increased execution time, or allow higher (double) load on the memory to gain faster execution time.
 */
-class ToArrayVisitor: Visitor {
+final class ToArrayVisitor: Visitor {
    
    var array: [WordCount]
    let size: Int

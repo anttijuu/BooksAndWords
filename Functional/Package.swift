@@ -16,6 +16,10 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .executableTarget(
             name: "Functional",
-            dependencies: [ .product(name: "ArgumentParser", package: "swift-argument-parser") ])
+            dependencies: [ .product(name: "ArgumentParser", package: "swift-argument-parser") ],
+//            swiftSettings: [
+//               .unsafeFlags(["--enforce-exclusivity=none"])
+//            ]
+        )
     ]
 )
