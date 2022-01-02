@@ -7,7 +7,7 @@
 
 import Foundation
 
-class TreeNode {
+final class TreeNode {
    let key: Int
    let word: String
    var count: Int
@@ -23,7 +23,8 @@ class TreeNode {
 
    func insert(_ word: String) -> Int {
       if word.hashValue == self.key {
-         precondition(word == self.word, "Two different words had same hash!")
+         // assert effective only in debug build.
+         assert(word == self.word, "Two different words had same hash!")
          count += 1
          return 0
       } else {
