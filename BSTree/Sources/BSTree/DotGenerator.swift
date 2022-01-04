@@ -73,6 +73,53 @@ final class DotGenerator: Visitor {
       name(for: upperNode) + " -> " + name(for: lowerNode) + " [ label=\"" + edge + "\" ]\n"
    }
 
+   // MARK: - ValueTreeNode
+
+   func visit(node: EnumTreeNode) throws {
+      precondition(fileHandle != nil, "fileHandle is nil, call start() first with valid file name")
+      switch node {
+         case .Empty:
+            return
+         case let .Node(left, _, word, count, right):
+            var str = "".rightJustified(width: level) + label(for: word, and: count)
+            fileHandle.write(str.data(using: .utf8)!)
+            switch left {
+               case .Empty:
+                  break
+               case let .Node(_, _, leftWord, _, _):
+                  level += 1
+                  try left.accept(self)
+                  level -= 1
+                  str = ("".rightJustified(width: level) + label(between: word, and: leftWord, onEdge: " L"))
+                  fileHandle.write(str.data(using: .utf8)!)
+                  level += 1
+            }
+            switch right {
+               case .Empty:
+                  break
+               case let .Node(_, _, rightWord, _, _):
+                  level += 1
+                  try right.accept(self)
+                  level -= 1
+                  str = ("".rightJustified(width: level) + label(between: word, and: rightWord, onEdge: " R"))
+                  fileHandle.write(str.data(using: .utf8)!)
+                  level += 1
+            }
+      }
+   }
+
+   private func name(for word: String) -> String {
+      return "node_" + convertSpecialCharacters(word)
+   }
+
+   private func label(for word: String, and count: Int) -> String {
+      return name(for: word) + " [ label=\"{ " + word + " | " + String(count) + " }\" ]\n"
+   }
+
+   private func label(between upperNode: String, and lowerNode: String, onEdge edge: String) -> String {
+      name(for: upperNode) + " -> " + name(for: lowerNode) + " [ label=\"" + edge + "\" ]\n"
+   }
+
    private func convertSpecialCharacters(_ string: String) -> String {
       var newString = string
       let char_dictionary = ["$" : "s",

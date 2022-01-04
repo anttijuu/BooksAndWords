@@ -34,14 +34,17 @@ final class ToArrayVisitor: Visitor {
    var array: [WordCount]
    let size: Int
    var lastIndex: Int = 0
-   
+   var uniqueWordCount = 0
+
    init(with size: Int) {
       self.size = size
       array = [WordCount]()
       array.reserveCapacity(size)
+      uniqueWordCount = 0
    }
    
    func visit(node: TreeNode) throws {
+      uniqueWordCount += 1
       if let left = node.left {
          try left.accept(self)
       }
@@ -71,5 +74,37 @@ final class ToArrayVisitor: Visitor {
          try right.accept(self)
       }
    }
-   
+
+   func visit(node: EnumTreeNode) throws {
+      switch node {
+         case .Empty:
+            return
+         case let .Node(left, _, word, count, right):
+            uniqueWordCount += 1
+            try left.accept(self)
+            // Only add a word to table if a) table has less than size elements or
+            // b) if the table is full, find a word in the array that has the smallest word count (smaller than this node)
+            // and replace that word with the word in this node.
+            if lastIndex < size {
+               // There is room in the array, so just add the word in the table.
+               array.append(WordCount(word: word, count: count))
+               lastIndex += 1
+            } else {
+               // Table is full, find a word that has smaller count than this node and is the smallest of those.
+               var smallestCount = Int.max
+               var smallestIndex = -1;
+               for index in 0..<lastIndex {
+                  if array[index].count < count && array[index].count < smallestCount {
+                     smallestCount = array[index].count;
+                     smallestIndex = index;
+                  }
+               }
+               // If such word was found, replace that with the word in this node.
+               if smallestIndex >= 0 {
+                  array[smallestIndex] = WordCount(word: word, count: count)
+               }
+            }
+            try right.accept(self)
+      }
+   }
 }

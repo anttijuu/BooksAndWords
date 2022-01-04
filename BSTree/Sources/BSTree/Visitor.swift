@@ -9,4 +9,5 @@ import Foundation
 
 protocol Visitor: AnyObject {
    func visit(node: TreeNode) throws
+   func visit(node: EnumTreeNode) throws
 }

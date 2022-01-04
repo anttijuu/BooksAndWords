@@ -36,7 +36,8 @@ struct BSTree: ParsableCommand {
 
       // Start reading book into memory from file.
       data = FileManager.default.contents(atPath: bookFile)
-      // Read words
+      // Read words to BST implemented with classes.
+      // Optionally use EnumBinarySearchTree to test out how enum based implementation works.
       let tree = BinarySearchTree()
       if let data = data {
          let asString = String(decoding: data, as: UTF8.self)

@@ -1,8 +1,6 @@
 # Binary Search Tree
 
-BSTree demonstrates one programming style to solve the frequent words task, where
-an app reads a text file containing a book. App then calculates the most often used words and their 
-frequencies from a text file, ignoring words listed in another file. 
+BSTree demonstrates one programming style to solve the frequent words task, where an app reads a text file containing a book. App then calculates the most often used words and their frequencies from a text file, ignoring words listed in another file. 
 
 Result could look like this:
 
@@ -39,6 +37,14 @@ And then opening the svg file (most browsers know how to do this). Note that if 
 > Note that GrahpViz cannot handle special characters in the .dot file node names. For example, if the text contains a word like "$5000", it is not possible to generate the graph. Obvious solution would be to replace special chars with allowed ones when generating .dot node names, but that is left as an exercise to the reader. You could also add problematic words with special chars to the ignore list (second parameter for the app), to solve issues related to this.
 
 The `TreeNode`,  `DotGenerator` and the `ToArrayVisitor` classes implement the [Visitor](https://en.wikipedia.org/wiki/Visitor_pattern) design pattern.
+
+## enums vs classes
+
+The default implementation uses Swift classes as tree nodes (`BinarySearchTree` and `TreeNode`). There is also another implementation in the project using enums with associated values as tree nodes (`EnumBinarySearchTree` and `EnumTreeNode`). You can compare the time performance of these by changing the implementation in the main.swift file:
+
+```Swift
+let tree = BinarySearchTree() // Or use EnumBinarySearchTree() instead. 
+```
 
 ## Dependencies
 

@@ -7,6 +7,23 @@
 
 import Foundation
 
+//struct Node {
+//   let key: Int
+//   let word: String
+//   var count: Int
+//
+//   // In Swift, value types cannot be recursive
+//   var leftChild: Node?
+//   var rightChild: Node?
+//
+//   init(_ word: String) {
+//      key = word.hashValue
+//      self.word = word
+//      count = 1
+//   }
+//}
+
+
 final class TreeNode {
    let key: Int
    let word: String
