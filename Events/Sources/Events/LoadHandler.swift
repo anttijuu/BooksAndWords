@@ -10,7 +10,6 @@ import Foundation
 class LoadHandler {
 
    private var dispatcher: EventDispatcher
-   private var words: [String] = []
 
    init(dispatcher: EventDispatcher) {
       self.dispatcher = dispatcher
@@ -22,12 +21,19 @@ class LoadHandler {
       if let data = data {
          var asString = String(decoding: data, as: UTF8.self)
          asString = asString.lowercased()
-         words = asString.split{ $0.isWhitespace || $0.isPunctuation }.map{ String($0) }
+         // Go through the string, pick word and dispatch it to next handler.
+         var word = String()
+         for letter in asString {
+            if letter.isLetter {
+               word.append(letter)
+            } else {
+               // Normalize word to lowercase
+               word = word.lowercased()
+               dispatcher.dispatch(Event.ProcessRawWord, param: word)
+               word = ""
+            }
+         }
       }
-      for word in words {
-         dispatcher.dispatch(Event.ProcessRawWord, param: word)
-      }
-      words.removeAll()
       dispatcher.dispatch(Event.Finish, param: nil)
    }
 }

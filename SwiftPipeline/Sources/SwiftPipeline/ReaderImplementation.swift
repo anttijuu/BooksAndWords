@@ -15,10 +15,9 @@ class ReaderImplementation: Reader {
       precondition(processor != nil)
       let data = FileManager.default.contents(atPath: file)
       if let data = data {
-         var asString = String(decoding: data, as: UTF8.self)
-         asString = asString.lowercased()
+         let asString = String(decoding: data, as: UTF8.self)
          for char in asString {
-            processor!.process(char: char)
+            processor!.process(char)
          }
          processor!.finish()
       }

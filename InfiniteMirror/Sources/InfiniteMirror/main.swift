@@ -33,9 +33,19 @@ struct InfiniteMirror: ParsableCommand {
       }
       data = FileManager.default.contents(atPath: bookFile)
       if let data = data {
-         var asString = String(decoding: data, as: UTF8.self)
-         asString = asString.lowercased()
-         words = asString.split{ $0.isWhitespace || $0.isPunctuation }.map{ String($0) }
+         let asString = String(decoding: data, as: UTF8.self)
+         
+         // Go through the string, pick words and add them to the array of words.
+         var word = String()
+         for letter in asString {
+            if letter.isLetter {
+               word.append(letter)
+            } else {
+               // Normalize word to lowercase
+               words.append(word.lowercased())
+               word = ""
+            }
+         }
       }
       let recursionLimit = 30_000
       

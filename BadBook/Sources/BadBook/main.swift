@@ -23,24 +23,36 @@ struct BadBook: ParsableCommand {
       // Start the timing
       let start = Date()
 
+      // Read the stopwords, a.k.a. filter words from another file.
+      var data = FileManager.default.contents(atPath: stopWordsFile)
+      var wordsToFilter = [String]()
+      if let data = data {
+         let asString = String(decoding: data, as: UTF8.self)
+         wordsToFilter = asString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
+      }
+
       // Start reading book into memory from file.
-      var data = FileManager.default.contents(atPath: bookFile)
+      data = FileManager.default.contents(atPath: bookFile)
       // Read words into an array of Strings
       var words = [String]()
       if let data = data {
          var asString = String(decoding: data, as: UTF8.self)
          // Normalize all chars to lowercase
          asString = asString.lowercased()
-         // Split the long string (the book contents) based on whitespace and
-         // punctuation into the array of Strings.
-         words = asString.split{ $0.isWhitespace || $0.isPunctuation }.map{ String($0) }
-      }
-      // Read the stopwords, a.k.a. filter words from another file.
-      data = FileManager.default.contents(atPath: stopWordsFile)
-      var wordsToFilter = [String]()
-      if let data = data {
-         let asString = String(decoding: data, as: UTF8.self)
-         wordsToFilter = asString.components(separatedBy: CharacterSet(charactersIn: ",\n"))
+         // Go through the string, pick words and filter outs the ones not to include.
+         var word = String()
+         for letter in asString {
+            if letter.isLetter {
+               word.append(letter)
+            } else {
+               // Normalize word to lowercase
+               word = word.lowercased()
+               if wordsToFilter.firstIndex(of: word) == nil && word.count >= 2 {
+                  words.append(word)
+               }
+               word = ""
+            }
+         }
       }
       // Prepare the array containing unique words and their frequencies.
       var wordFrequencies = [WordFrequency]()

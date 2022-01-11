@@ -9,6 +9,6 @@ import Foundation
 
 protocol Processor {
    func filtering(with filter: Filter) -> Processor
-   func process(char: Character)
+   func process(_ char: Character)
    func finish()
 }

@@ -16,13 +16,13 @@ class ProcessorImplementation: Processor {
       return self
    }
 
-   func process(char: Character) {
+   func process(_ char: Character) {
       precondition(filter != nil)
-      if char.isPunctuation || char.isWhitespace {
-         filter!.filter(word)
-         word = ""
-      } else {
+      if char.isLetter {
          word.append(char)
+      } else {
+         filter!.filter(word.lowercased())
+         word = ""
       }
    }
 
