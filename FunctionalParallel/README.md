@@ -22,15 +22,19 @@ Listing 100 most common words.
 ...
 ```
 
-This implementation is demonstrating [functional programming](https://en.wikipedia.org/wiki/Functional_programming) with parallel threads as a way to solve the problem, using Swift as the programming language. The code uses the Swift collection methods:
+This implementation is demonstrating [functional programming](https://en.wikipedia.org/wiki/Functional_programming) with **parallel threads** as a way to solve the problem, using Swift as the programming language. The code uses the Swift collection methods:
 
-1. `filter` to filter out words to ignore from the array of words read from the file (in `AsyncCounter.swift`),
-1. `reduce` to create a *dictionary* of words with word counts (in `AsyncCounter.swift`),
-1. `sorted` to sort the dictionary by the word count (in `main.swift`),
-1. `prefix` to select only top 100 elements from the dictionary (in `main.swift`), and finally
-1. `forEach` to print out the top 100 elements to the console (in `main.swift`).
+1. `filter` to filter out words to ignore from the array of words read from the file,
+1. `reduce` to create a *dictionary* of words with word counts,
+1. `sorted` to sort the dictionary by the word count,
+1. `prefix` to select only top 100 elements from the dictionary, and finally
+1. `forEach` to print out the top 100 elements to the console.
 
-The `withThrowingTaskGroup` group of async tasks takes care of counting the words considering words to ignore. The async tasks produce dictionaries (word and word count in `[String: Int]`) that are then combined to a final dictionary containing the word counts from all the asynchronous subtasks. This is then returned to `run()` in `main.swift` and processed to the end there.
+You can see this done in the `Functional` implementation in a single main thread. Here, the same is done so that the array of words is sliced to *eight parallel threads*. The threads go through their *slices* of the words array and count the occurrences of the unique words in their slices into a dictionary (containing String / count pairs). As the threads finish, the task group combines the subtask results in one single dictionary of word/count pairs.
+
+The `withThrowingTaskGroup` group of async tasks takes care of counting the words considering words to ignore. The async tasks produce dictionaries (word and word count in `[String: Int]`) that are then combined to a final dictionary containing the word counts from all the asynchronous subtasks.
+
+Additionally a semaphore is needed -- after the main thread has launched the Task and task group threads, it waits for the task group to signal the semaphore that the work has been done. After this, the main thread continues to the end and the process is finished.
 
 
 ## Dependencies
@@ -60,7 +64,7 @@ Assuming the binary is in `./.build/release` and user gives the two text files a
 The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
 
 
-* (c) Antti Juustila
+* &copy; Antti Juustila 2021-2022
 * INTERACT Research Group
 * Study program for Information Processing Science
 * University of Oulu, Finland
