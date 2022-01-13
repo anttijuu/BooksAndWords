@@ -62,23 +62,26 @@ struct Functional: ParsableCommand {
       // After getting the results from parallel tasks, the partial results are joined and the dictionary
       // is sorted in descending order and prints out the top words.
       // Count the slice size of the array for the subtasks to handle.
-      let spliceSize = words.count / 8
-      for index in stride(from: 0, to: words.count - 1, by: spliceSize) {
-         //               let slicer = ArraySliceCounter()
-         //               result = try await slicer.handleSlice(slice: words[index..<min(index+spliceSize,words.count-1)], filter: wordsToFilter)
+      let sliceSize = words.count / 8
+      for index in stride(from: 0, to: words.count - 1, by: sliceSize) {
          // Add tasks to the task group, they are then executed in parallel.
-         let slice = words[index..<min(index+spliceSize,words.count-1)]
+         let slice = words[index..<min(index+sliceSize,words.count-1)]
+         // Prepare the unit of asynchronous work in a Task.
          Task(priority: .userInitiated) {
+            // The word frequencies will be stored in this dictionary.
             var wordCounts = [String: Int]()
 
+            // Launch the tasks in a task group.
             try! await withThrowingTaskGroup(of: [String: Int].self, body: { group in
+               // Add a task to the task group
                group.addTask(priority: .userInitiated) { () -> [String: Int] in
+                  // Each task asynchronously count the word frequencies of a slice of an array.
                   async let result = slice.filter { word in
                      word.count >= 2 && !wordsToFilter.contains(word)
                   }.reduce(into: [:]) { counts, word in
                      counts[word, default: 0] += 1
                   }
-                  // Return the result from the task to the task group.
+                  // Return the resulting dictionary from the task to the task group.
                   return await result
                }
                // Combine the results from the subtasks as they finish.
