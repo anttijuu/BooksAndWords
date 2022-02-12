@@ -2,7 +2,13 @@
 
 FunctionalParallel demonstrates one programming style to solve the frequent words task, where an app reads a text file containing a book. App then calculates the most often used words and their frequencies from a text file, ignoring words listed in another file. 
 
-This implementation is, in principle, the same as in Functional demonstration. What is different to Functional is that the word array read from a book file is sliced into eight, and each slice is then processed *in parallel* in separate Swift `async` tasks. This makes the implementation faster.
+This implementation is, in principle, the same as in Functional demonstration. What is different to Functional is that in this implementation, the word array read from a book file is sliced into eight, and each slice is then processed *in parallel* in separate Swift `async` tasks. This makes the implementation somewhat faster than the Functional implementation. 
+
+Compare the speed advantage in your computer. On an Intel MacBook Pro 13" 2018 model (macOS Monterey) FunctionalParallel took 1.3252 secs to handle the Bulk.txt file (~16MB), as the Functional took 2.0876 secs.
+
+Image below shows the eight threads of processing in Xcode Instruments:
+
+![Threads running in parallel](ThreadsRunning.png)
 
 Result could look like this:
 
@@ -32,15 +38,12 @@ This implementation is demonstrating [functional programming](https://en.wikiped
 
 You can see this done in the `Functional` implementation in a single main thread. Here, the same is done so that the array of words is sliced to *eight parallel threads*. The threads go through their *slices* of the words array and count the occurrences of the unique words in their slices into a dictionary (containing String / count pairs). As the threads finish, the task group combines the subtask results in one single dictionary of word/count pairs.
 
-The `withThrowingTaskGroup` group of async tasks takes care of counting the words considering words to ignore. The async tasks produce dictionaries (word and word count in `[String: Int]`) that are then combined to a final dictionary containing the word counts from all the asynchronous subtasks.
-
-Additionally a semaphore is needed -- after the main thread has launched the Task and task group threads, it waits for the task group to signal the semaphore that the work has been done. After this, the main thread continues to the end and the process is finished.
+The `withTaskGroup` group of async tasks takes care of counting the words considering words to ignore. The async tasks produce dictionaries (word and word count in `[String: Int]`) that are then combined to a final dictionary containing the word counts from all the asynchronous subtasks.
 
 
 ## Dependencies
 
-FunctionalParallel uses the Swift Argument Parser to handle the parameters.
-
+FunctionalParallel uses the Swift Argument Parser to handle the parameters. Note that the current implementation relies on the `async` branch of the ArgumentParser library.
 
 ## Building and running
 
