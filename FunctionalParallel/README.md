@@ -4,7 +4,7 @@ FunctionalParallel demonstrates one programming style to solve the frequent word
 
 This implementation is, in principle, the same as in Functional demonstration. What is different to Functional is that in this implementation, the word array read from a book file is sliced into eight, and each slice is then processed *in parallel* in separate Swift `async` tasks. This makes the implementation somewhat faster than the Functional implementation. 
 
-Compare the speed advantage in your computer. On an Intel MacBook Pro 13" 2018 model (macOS Monterey) FunctionalParallel took 1.3252 secs to handle the Bulk.txt file (~16MB), as the Functional took 2.0876 secs.
+Compare the speed advantage in your computer. On a Mac Mini M1 (2020) with macOS Monterey 12.2.1 (21D62) and Apple Swift version 5.5.2, FunctionalParallel took 0.69851 secs to handle the Bulk.txt file (~16MB), as the Functional took 1.1815 secs.
 
 Image below shows the eight threads of processing in Xcode Instruments:
 
@@ -43,7 +43,9 @@ The `withTaskGroup` group of async tasks takes care of counting the words consid
 
 ## Dependencies
 
-FunctionalParallel uses the Swift Argument Parser to handle the parameters. Note that the current implementation relies on the `async` branch of the ArgumentParser library.
+FunctionalParallel uses the Swift ArgumentParser to handle the parameters. Note that the current implementation relies on the `async` branch of the ArgumentParser library.
+
+> Note that while this is being written, the ArgumentParser async implementation will soon be migrated from async branch to main branch. When this happens, it may be that this implementation must change to accommodate the change to the ArgumentParser. 
 
 ## Building and running
 
@@ -65,7 +67,6 @@ Assuming the binary is in `./.build/release` and user gives the two text files a
 ## Who did this
 
 The implementation is inspired by the book [Exercises in Programming Style by Cristina Videira Lopes](https://www.routledge.com/Exercises-in-Programming-Style/Lopes/p/book/9780367350208).
-
 
 * &copy; Antti Juustila 2021-2022
 * INTERACT Research Group

@@ -7,6 +7,10 @@ struct AsyncMain: AsyncMainProtocol {
    typealias Command = Functional
 }
 
+// Need to use a class to pass the word array to it for processing in async task group.
+// In a struct, using async task group, cannot pass the words array from outer struct
+// context into the async task group without compiler protesting.
+
 class WordCounter {
    func countWords(from words: [String], wordsToFilter: [String]) async -> [String: Int] {
       // Launch the tasks in a task group.
@@ -20,10 +24,8 @@ class WordCounter {
          for index in stride(from: 0, to: words.count - 1, by: sliceSize) {
             // Add tasks to the task group, they are then executed in parallel.
             group.addTask(priority: .userInitiated) { () -> [String: Int] in
-               let slice = words[index..<min(index+sliceSize,words.count-1)]
-
+               let slice = words[index..<min(index+sliceSize - 1,words.count - 1)]
                // Each task asynchronously count the word frequencies of a slice of an array.
-               print("Starting... \(slice.startIndex)...\(slice.endIndex)")
                async let result = slice.filter { word in
                   word.count >= 2 && !wordsToFilter.contains(word)
                }.reduce(into: [:]) { counts, word in
