@@ -4,9 +4,7 @@ FunctionalParallel demonstrates one programming style to solve the frequent word
 
 This implementation is, in principle, the same as in Functional demonstration. What is different to Functional is that in this implementation, the word array read from a book file is sliced into eight, and each slice is then processed *in parallel* in separate Swift `async` tasks. This makes the implementation somewhat faster than the Functional implementation. 
 
-Compare the speed advantage in your computer. On a Mac Mini M1 (2020) with macOS Monterey 12.2.1 (21D62) and Apple Swift version 5.5.2, FunctionalParallel took 0.69851 secs to handle the Bulk.txt file (~16MB), as the Functional took 1.1815 secs.
-
-> Note: updated this to Swift 5.6, need to measure and update the above performance numbers soon...
+Compare the speed advantage in your computer. On a Mac Mini M1 (2020) with macOS Monterey 12.3 and Apple Swift version 5.6, FunctionalParallel took 1.44697 secs to handle the Bulk.txt file (~16MB), as the Functional took 2.40643 secs.
 
 Image below shows the eight threads of processing in Xcode Instruments:
 

@@ -30,20 +30,20 @@ Measurements were done on Apple Mac Mini M1 with 16GB of RAM and 1 TB SSD disk. 
 
 | Implementation              |  Execution time (secs) |
 |-----------------------------|-----------------------:|
-| FunctionalParallel          |                0.69851 |
-| SwiftKickForwardParallel    |                0.99564 |
-| Functional                  |                1.18151 |
-| InfiniteMirror              |                1.33394 |
-| SwiftKickForward            |                1.32047 |
-| Events                      |                1.76301 |
-| BSTree                      |                2.04290 |
-| SwiftPipeline               |                2.18909 |
-| Outsource                   |                6.82356 |
-| Persistence 1)              |               42.60353 |
-| BadBook 2)                  |              139.76655 |
+| FunctionalParallel          |                1.44697 |
+| SwiftKickForwardParallel    |                1.71460 |
+| SwiftKickForward            |                2.03113 |
+| InfiniteMirror              |                2.03755 |
+| Functional                  |                2.40643 |
+| BSTree                      |                2.79729 |
+| SwiftPipeline               |                2.91402 |
+| Events                      |                2.91830 |
+| Outsource                   |                7.00010 |
+| Persistence 1)              |               43.40234 |
+| BadBook 2)                  |              139.83773 |
 
-1) Note that the execution time of Persistence is the first run when the words in the book are inserted with word counts in a Sqlite database. The second run does not scan the book file but reads the word counts already produced, from the database. Then the execution time is only 0.01731 seconds. Lesson: if you need to do this many times, maybe consider caching the result e.g. in a database.
-2) BadBook is a naive loop within a loop implementation, showing that O(n^2) or O(m * n) time complexity with large data sets is not the way to do things...
+1) Note that the execution time of Persistence is the first run when the words in the book are inserted with word counts in a Sqlite database. The second run does not scan the book file but reads the word counts already produced, from the database. Then the execution time is only 0.02811 seconds. Lesson: if you need to do this many times, maybe consider caching the result e.g. in a database.
+2) BadBook is a naive loop within a loop implementation, showing that O(m * n) time complexity with large data sets is not the way to do things. Here, n is the number of all words in a book while m is the number of unique words in the book file.
 
 ## Dependencies
 
