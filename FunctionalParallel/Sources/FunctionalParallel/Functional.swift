@@ -2,11 +2,6 @@ import Foundation
 
 import ArgumentParser
 
-@main
-struct AsyncMain: AsyncMainProtocol {
-   typealias Command = Functional
-}
-
 class WordCounter {
    func countWords(from words: [String], wordsToFilter: [String]) async -> [String: Int] {
       // Launch the tasks in a task group.
@@ -23,20 +18,20 @@ class WordCounter {
                let slice = words[index..<min(index+sliceSize,words.count-1)]
 
                // Each task asynchronously count the word frequencies of a slice of an array.
-               print("Starting... \(slice.startIndex)...\(slice.endIndex)")
+               //print("Starting... \(slice.startIndex)...\(slice.endIndex)")
                async let result = slice.filter { word in
                   word.count >= 2 && !wordsToFilter.contains(word)
                }.reduce(into: [:]) { counts, word in
                   counts[word, default: 0] += 1
                }
                // Return the resulting dictionary from the task to the task group.
-               print("Returning...")
+               //print("Returning...")
                return await result
             }
          }
          // Combine the results from the subtasks as they finish.
          for await partial in group {
-            print("Combining to final...")
+            //print("Combining to final...")
             for (key, value) in partial {
                if wordCounts[key] != nil {
                   wordCounts[key] = wordCounts[key]! + value
@@ -50,7 +45,7 @@ class WordCounter {
    }
 }
 
-
+@main
 struct Functional: AsyncParsableCommand {
    static let configuration = CommandConfiguration(abstract: "A Swift command-line tool to count the most often used words in a book file.")
    
