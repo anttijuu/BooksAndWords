@@ -63,9 +63,9 @@ final class KickForwardParallel: ParsableCommand {
       }
 
       let sliceSize = words.count / 8
-      print("spliceSize is \(sliceSize) for \(words.count) words")
+      // print("spliceSize is \(sliceSize) for \(words.count) words")
       var map: [String: Int] = [:]
-      print("Starting dispatch queues")
+      // print("Starting dispatch queues")
 
       let queue = DispatchQueue(label: "com.anttijuustila.kickforward", qos: .userInteractive, attributes: .concurrent)
       let group = DispatchGroup()
@@ -75,7 +75,7 @@ final class KickForwardParallel: ParsableCommand {
          group.enter()
          queue.async {
             let pieces = function(words[index..<min(index+sliceSize,words.count-1)], self.calculateFrequencies)
-            print("Waiting for map...")
+            // print("Waiting for map...")
             mapSemaphore.wait()
             for (key, value) in pieces {
                if map[key] != nil {
@@ -84,14 +84,14 @@ final class KickForwardParallel: ParsableCommand {
                   map[key] = value
                }
             }
-            print("...signalling map")
+            // print("...signalling map")
             mapSemaphore.signal()
             group.leave()
          }
       }
-      print("Waiting for threads...")
+      // print("Waiting for threads...")
       group.wait()
-      print("Map has before printing \(map.count) elements")
+      // print("Map has before printing \(map.count) elements")
       printTop(wordCounts: map)
    }
 
