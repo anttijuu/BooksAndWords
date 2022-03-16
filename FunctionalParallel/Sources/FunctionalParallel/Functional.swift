@@ -2,6 +2,7 @@ import Foundation
 
 import ArgumentParser
 
+
 class WordCounter {
    func countWords(from words: [String], wordsToFilter: [String]) async -> [String: Int] {
       // Launch the tasks in a task group.
@@ -15,8 +16,7 @@ class WordCounter {
          for index in stride(from: 0, to: words.count - 1, by: sliceSize) {
             // Add tasks to the task group, they are then executed in parallel.
             group.addTask(priority: .userInitiated) { () -> [String: Int] in
-               let slice = words[index..<min(index+sliceSize,words.count-1)]
-
+               let slice = words[index..<min(index+sliceSize - 1,words.count - 1)]
                // Each task asynchronously count the word frequencies of a slice of an array.
                //print("Starting... \(slice.startIndex)...\(slice.endIndex)")
                async let result = slice.filter { word in
