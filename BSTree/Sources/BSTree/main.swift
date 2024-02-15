@@ -38,7 +38,7 @@ struct BSTree: ParsableCommand {
       data = FileManager.default.contents(atPath: bookFile)
       // Read words to BST implemented with classes.
       // Optionally use EnumBinarySearchTree to test out how enum based implementation works.
-      let tree = BinarySearchTree()
+		var tree: BinarySearchTree? = BinarySearchTree()
       if let data = data {
          let asString = String(decoding: data, as: UTF8.self)
          // Go through the string, pick words and filter outs the ones not to include.
@@ -50,7 +50,7 @@ struct BSTree: ParsableCommand {
                // Normalize word to lowercase
                word = word.lowercased()
                if wordsToFilter.firstIndex(of: word) == nil && word.count >= 2 {
-                  tree.insert(word)
+                  tree!.insert(word)
                }
                word = ""
             }
@@ -59,7 +59,7 @@ struct BSTree: ParsableCommand {
          // Use the asArray to get the most frequent words from the tree.
          // Then sort the array by the count, descending.
          let exportStart = Date()
-         if let result = tree.asArray(topListSize) {
+         if let result = tree!.asArray(topListSize) {
             let exportDuration = exportStart.distance(to: Date())
             print("Export took: \(exportDuration)")
             let sorted = result.sorted( by: { $0.count > $1.count })
@@ -73,7 +73,7 @@ struct BSTree: ParsableCommand {
                }
             }
          }
-         print("Count of words: \(tree.wordCount), count of unique words: \(tree.uniqueWordCount)")
+         print("Count of words: \(tree!.wordCount), count of unique words: \(tree!.uniqueWordCount)")
       }
       // Print out how long this took.
       let duration = start.distance(to: Date())
@@ -86,8 +86,9 @@ struct BSTree: ParsableCommand {
          if name.contains(".") {
             name = String(name.prefix(upTo: name.lastIndex(of: ".")!))
          }
-         tree.exportDot(with: name, to: fileName)
+         tree!.exportDot(with: name, to: fileName)
       }
+		tree = nil
    }
 
 }

@@ -12,6 +12,10 @@ final class BinarySearchTree {
    var wordCount = 0
    var uniqueWordCount = 0
 
+	deinit {
+		root = nil
+	}
+	
    func insert(_ word: String) {
       wordCount += 1
       if let root = root {

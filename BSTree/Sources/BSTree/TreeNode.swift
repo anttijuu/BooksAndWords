@@ -38,6 +38,11 @@ final class TreeNode {
       count = 1
    }
 
+	deinit {
+		left = nil
+		right = nil
+	}
+
    func insert(_ word: String) -> Int {
       if word.hashValue == self.key {
          // assert effective only in debug build.

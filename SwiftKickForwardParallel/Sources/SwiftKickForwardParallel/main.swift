@@ -2,13 +2,29 @@ import Foundation
 import ArgumentParser
 
 // Type aliases to make the func declarations easier to read:
-typealias NoOpFunc = () -> Void
-typealias ArrayFunc = (ArraySlice<String>) -> [String: Int]
-typealias ArrayNoOpFunc = (ArraySlice<String>, NoOpFunc) -> [String: Int]
-typealias ArrayArrayNoOpFunc = (ArraySlice<String>, ArrayNoOpFunc) -> [String: Int]
-typealias MapNoOpFunc = ([String: Int], NoOpFunc) -> [String: Int]
-typealias ArrayMapNoOpFunc = ([String], MapNoOpFunc) -> [String: Int]
-typealias ArrayArrayMapNoOpFunc = ([String], ArrayMapNoOpFunc) -> [String: Int]
+typealias NoOpFunc = @Sendable () -> Void
+typealias ArrayFunc = @Sendable (ArraySlice<String>) -> [String: Int]
+typealias ArrayNoOpFunc = @Sendable (ArraySlice<String>, NoOpFunc) -> [String: Int]
+typealias ArrayArrayNoOpFunc = @Sendable (ArraySlice<String>, ArrayNoOpFunc) -> [String: Int]
+typealias MapNoOpFunc = @Sendable ([String: Int], NoOpFunc) -> [String: Int]
+typealias ArrayMapNoOpFunc = @Sendable ([String], MapNoOpFunc) -> [String: Int]
+typealias ArrayArrayMapNoOpFunc = @Sendable ([String], ArrayMapNoOpFunc) -> [String: Int]
+
+actor WordCounts {
+	var map: [String: Int] = [:]
+
+	func append(_ item: (key: String, value: Int)) async {
+		if map[item.key] != nil {
+			map[item.key] = map[item.key]! + item.value
+		} else {
+			map[item.key] = item.value
+		}
+	}
+
+	func get() async -> [String: Int] {
+		return map
+	}
+}
 
 final class KickForwardParallel: ParsableCommand {
 
@@ -25,7 +41,7 @@ final class KickForwardParallel: ParsableCommand {
 
    var wordsToFilter = [String]()
 
-   func run() throws {
+	func run() async throws {
       print("Book file: \(bookFile).")
       print("Stop words file: \(stopWordsFile).")
       print("Listing \(topListSize) most common words.")
@@ -33,13 +49,14 @@ final class KickForwardParallel: ParsableCommand {
       let start = Date()
 
       // readFile calls filterWords...
-      readFile(file: bookFile, function: filterWords)
+      await readFile(file: bookFile, function: filterWords)
 
       let duration = start.distance(to: Date())
       print(" >>>> Time \(duration) secs.")
    }
 
-   func readFile(file: String, function: @escaping ArrayArrayNoOpFunc) -> Void {
+	@Sendable
+	func readFile(file: String, function: @escaping ArrayArrayNoOpFunc) async -> Void {
       var data = FileManager.default.contents(atPath: file)
       var words = [String]()
       if let data = data {
@@ -64,7 +81,8 @@ final class KickForwardParallel: ParsableCommand {
 
       let sliceSize = words.count / 8
       // print("spliceSize is \(sliceSize) for \(words.count) words")
-      var map: [String: Int] = [:]
+      //var map: [String: Int] = [:]
+		let map = WordCounts()
       // print("Starting dispatch queues")
 
       let queue = DispatchQueue(label: "com.anttijuustila.kickforward", qos: .userInteractive, attributes: .concurrent)
@@ -73,16 +91,12 @@ final class KickForwardParallel: ParsableCommand {
       // ...filterWords calls calculateFrequencies...
       for index in stride(from: 0, to: words.count - 1, by: sliceSize) {
          group.enter()
-         queue.async {
-            let pieces = function(words[index..<min(index+sliceSize,words.count-1)], self.calculateFrequencies)
+         queue.async { [self, words] in
+				let pieces = function(words[index..<min(index+sliceSize,words.count-1)], self.calculateFrequencies)
             // print("Waiting for map...")
             mapSemaphore.wait()
             for (key, value) in pieces {
-               if map[key] != nil {
-                  map[key] = map[key]! + value
-               } else {
-                  map[key] = value
-               }
+					await map.append((key, value))
             }
             // print("...signalling map")
             mapSemaphore.signal()
@@ -92,9 +106,10 @@ final class KickForwardParallel: ParsableCommand {
       // print("Waiting for threads...")
       group.wait()
       // print("Map has before printing \(map.count) elements")
-      printTop(wordCounts: map)
+		printTop(wordCounts: await map.get())
    }
 
+	@Sendable
    func filterWords(words: ArraySlice<String>, function: ArrayNoOpFunc) -> [String: Int] {
       var cleanedWords = [String]()
       for word in words {
@@ -105,6 +120,7 @@ final class KickForwardParallel: ParsableCommand {
       return function(cleanedWords[1...], noOp)
    }
 
+	@Sendable
    func calculateFrequencies(words: ArraySlice<String>, function: NoOpFunc) ->  [String: Int] {
       var wordCounts = [String: Int]()
       for word in words {
@@ -118,6 +134,7 @@ final class KickForwardParallel: ParsableCommand {
       return wordCounts
    }
 
+	@Sendable
    func printTop(wordCounts: [String: Int]) -> Void {
       let sorted = wordCounts.sorted( by: { $0.1 > $1.1 })
       var counter = 1
@@ -130,6 +147,7 @@ final class KickForwardParallel: ParsableCommand {
       }
    }
 
+	@Sendable
    func noOp() -> Void {
       // ... it does nothing.
    }
